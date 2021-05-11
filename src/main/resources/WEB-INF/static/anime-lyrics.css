@@ -1,0 +1,89 @@
+/* header */
+header {
+    height: 4rem;
+    background: linear-gradient(#1abc9c 50%, transparent 100%);
+}
+header .header-container {
+    padding: 0 60px;
+    vertical-align: middle;
+}
+#logo {
+    width: auto;
+    height: 2rem;
+    margin: auto 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+#nav-title {
+    font-family: "PingFang SC", "Lantinghei SC", "Microsoft Yahei", "WenQuanYi Micro Hei", sans-serif;
+    font-size: 2rem;
+    color: #333;
+    margin: auto 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+header a:link:hover {
+    text-decoration: none;
+}
+/* footer */
+footer {
+    background: #1abc9c;
+    padding: 1em 0;
+}
+footer a:link {
+    color: #333333;
+}
+/* font for languages */
+body, *[lang="zh"] {
+    font-family: "PingFang SC", "Lantinghei SC", "Microsoft Yahei", "WenQuanYi Micro Hei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+}
+*[lang="ja"] {
+    font-family: "Hiragino Sans GB", "MS Gothic", "Yu Gothic", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+}
+*[lang="ja-latn"] {
+    font-family: "Times New Roman", serif;
+}
+*[lang="x-ipa"] {
+    font-family: "Doulos SIL", "Gentium Plus", "Claris SIL", "Times New Roman", serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+    font-weight: 300;
+}
+/* patches for main #write area */
+#write ul {
+    margin-left: 2em;
+}
+#write a.external-link:after {
+    content: url("./external-link.svg");
+    vertical-align: middle;
+}
+#write .lyrics_outer {
+    text-align: center;
+    margin: 2em;
+    border: #333333 1px solid;
+    padding: 2em;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+#write .lyrics>p {
+    margin-bottom: 0;
+}
+/* black covers */
+.covered, .covered :link {
+    color: #333;
+    background-color: #333;
+}
+.covered:hover {
+    color: #fff;
+    background-color: #333;
+}
+.covered :link:hover {
+    color: #1abc9c;
+    background-color: #333;
+}

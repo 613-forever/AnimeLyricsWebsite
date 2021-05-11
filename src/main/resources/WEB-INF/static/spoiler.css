@@ -1,0 +1,31 @@
+.spoiler {
+    width: 100%;
+}
+.spoiler>div{
+    width: fit-content;
+    margin: 0 auto;
+    border: #333333 1px solid;
+    border-left: #1abc9c 0.5em solid;
+}
+.spoiler>div>img {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    display: inline-block;
+    width: 5em;
+    height: 5em;
+    vertical-align: middle;
+}
+.spoiler>div>div {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 1em;
+    vertical-align: middle;
+}
+.spoiler>div>div>p:first-child {
+    font-size: 2em;
+}
+.spoiler>div>div>p {
+    text-indent: 0 !important;
+    margin-bottom: 0 !important;
+    margin-right: 0.5em;
+}

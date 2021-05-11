@@ -1,0 +1,35 @@
+.bilibili-video-container {
+    margin: 1.2em 2em;
+    border: #333 1px solid;
+    border-radius: 5px;
+    background-color: #eee;
+}
+.bilibili-video-container>iframe.video-frame {
+    display: none;
+    border: none;
+    border-top: #333 1px solid;
+    width: 100%;
+    min-width: 50vw;
+    min-height: 37.5vw;
+}
+.bilibili-video-container>.banner {
+    padding: 0.2em 0.2em 0.1em;
+    width: 100%;
+    text-align: center;
+}
+.bilibili-video-container>.banner>.bilibili-toggle {
+    float: right;
+    color: #1abc9c;
+    vertical-align: middle;
+}
+.bilibili-video-container>.banner>.bilibili-toggle:after {
+    content: url("./details.svg");
+    vertical-align: middle;
+}
+.bilibili-video-container>.banner>.bilibili-toggle.active:after {
+    content: url("./fold.svg");
+    vertical-align: middle;
+}
+.bilibili-video-container>.banner:after {
+    clear: both;
+}

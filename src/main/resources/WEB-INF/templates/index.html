@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head th:replace="~{fragments :: head(主页,~{::link},~{::scripts})}">
+  <meta charset="UTF-8">
+  <title>主页 - 的歌词收藏册</title>
+</head>
+<body>
+<div class="container">
+  <header th:replace="~{fragments :: header}"></header>
+  <article id="write">
+    <h2>本网站内容页面列表：</h2>
+    <ul>
+      <li th:each="entry : ${articles}">
+        <a th:href="@{'./' + ${entry.filename}}" th:utext="${entry.title}"></a>
+      </li>
+    </ul>
+    <h2>帮助页面列表：</h2>
+    <ul>
+      <li th:each="entry : ${helpArticles}">
+        <a th:href="@{'./' + ${entry.filename}}" th:utext="${entry.title}"></a>
+      </li>
+    </ul>
+    <h2>系统页面列表：</h2>
+    <ul>
+      <li th:each="entry : ${sysArticles}">
+        <a th:href="@{'./' + ${entry.filename}}" th:utext="${entry.title}"></a>
+      </li>
+    </ul>
+  </article>
+  <footer th:replace="~{fragments :: footer}"></footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+.gairaigo {
+    font-style: italic;
+}
+.normal-text-line, .romaji-text-line {
+    display: block;
+}
+.furigana-text-line, .kana-text-line, .bracket-text-line {
+    display: none;
+}
+.aml-lyrics-control-group {
+    margin: 2em auto;
+}
+.capitalize {
+    text-transform: capitalize;
+}
+.uppercase {
+    text-transform: uppercase;
+}
+.hover-word {
+    background: #1fdeb8;
+}

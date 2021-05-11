@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>控件模板</title>
+</head>
+<body>
+<div class="container">
+  <div class="row">
+    <div class="col-md-10">
+      <script th:fragment="lyrics-control-js" type="application/javascript" src="../static/lyrics-control.js"
+              th:src="@{./static/lyrics-control.js}"></script>
+      <link th:fragment="lyrics-control-css" rel="stylesheet" type="text/css" href="../static/lyrics-control.css"
+            th:href="@{./static/lyrics-control.css}"/>
+      <div class="btn-group aml-lyrics-control-group" th:fragment="lyrics-control">
+        <button type="button" class="btn btn-default aml-lyrics-control active" data-alm-type="normal">普通文本</button>
+        <button type="button" class="btn btn-default aml-lyrics-control" data-alm-type="furigana">振假名注音</button>
+        <button type="button" class="btn btn-default aml-lyrics-control" data-alm-type="bracket">括号注音</button>
+        <button type="button" class="btn btn-default aml-lyrics-control" data-alm-type="kana">仅假名</button>
+        <button type="button" class="btn btn-default aml-lyrics-control active" data-alm-type="romaji">罗马字</button>
+        <button type="button" class="btn btn-default aml-lyrics-control active" th:each="lang : ${langs}"
+                th:data-alm-type="'trans-' + ${lang}" th:text="'翻译(' + ${lang} + ')'">翻译
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

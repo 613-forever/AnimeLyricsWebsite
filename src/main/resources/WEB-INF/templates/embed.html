@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head(${title}, ~{::link}, ~{::scripts})">
+  <meta charset="UTF-8">
+  <title th:text="title">标题</title>
+</head>
+<body>
+<div class="container">
+  <header th:replace="~{fragments :: header}"></header>
+  <div class="row">
+    <div class="col-md-10">
+      <article id="write" th:utext="${content}"></article>
+    </div>
+    <aside class="col-md-2">
+    </aside>
+  </div>
+  <footer th:replace="~{fragments :: footer}"></footer>
+</div>
+<th:block th:each="script : ${scripts}" th:utext="${script}"/>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package org.forever613.anime_lyrics.renderers;
 
 import org.forever613.anime_lyrics.FileCollector;
+import org.forever613.anime_lyrics.GeneratedFileInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
@@ -22,7 +23,7 @@ public class RobotsRenderer implements Renderer {
     }
 
     @Override
-    public String render(File draft, File target) {
+    public GeneratedFileInfo render(File draft, File target) {
         assert draft == null;
 
         Context context = new Context();
@@ -38,6 +39,6 @@ public class RobotsRenderer implements Renderer {
         }
 
         logger.info("I have generated the robots.txt successfully.");
-        return "index";
+        return new GeneratedFileInfo("robots.txt", null, null);
     }
 }

@@ -8,12 +8,25 @@
 <div class="container">
   <header th:replace="~{fragments :: header}"></header>
   <article id="write">
-    <h2>本网站内容页面列表：</h2>
-    <ul>
-      <li th:each="entry : ${articles}">
-        <a th:href="@{'./' + ${entry.filename}}" th:utext="${entry.title}"></a>
-      </li>
-    </ul>
+    <h2>内容页面列表</h2>
+    <table>
+      <caption>内容页面</caption>
+      <thead>
+      <tr class="header">
+        <th>名称</th>
+        <th>创建时间</th>
+        <th>最后更新时间</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="entry,stat : ${articles}" th:class="${stat.odd} ? 'odd' : 'even'">
+        <td><a class="internal-link" target="_blank" th:href="@{'./' + ${entry.filename}}"
+               th:utext="${entry.title}"></a></td>
+        <td th:text="${#dates.format(entry.createdDate, 'yyyy-MM-dd HH:mm')}"/>
+        <td th:text="${#dates.format(entry.modifiedDate, 'yyyy-MM-dd HH:mm')}"/>
+      </tr>
+      </tbody>
+    </table>
     <h2>帮助页面列表：</h2>
     <ul>
       <li th:each="entry : ${helpArticles}">

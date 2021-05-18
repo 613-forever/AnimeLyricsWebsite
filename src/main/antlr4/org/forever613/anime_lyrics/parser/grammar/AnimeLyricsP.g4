@@ -10,10 +10,11 @@ name: words;
 
 article: (article_line)+;
 
-article_line: (header | list | markup_text | hr | template | lyrics) NEWLINE+;
+article_line: (header | list | parse_only | markup_text | hr | template | lyrics) NEWLINE+;
 
 header: mark+=HASH+ SPACE+ words;
 list: mark+=ASTER+ SPACE+ (footnote_def SPACE+)? markup_text;
+parse_only: PARSE_ONLY_SIGN SPACE+ markup_text;
 markup_text: (nodes+=markup_element SPACE*)+;
 markup_element: (words | time_text | link | color_text | covered_text | lang_text | br | ateji | ruby | footnote_ref /*| inline_lyrics*/);
 hr: HORIZONTAL_RULE;

@@ -1,5 +1,7 @@
 package org.forever613.anime_lyrics.renderers;
 
+import org.forever613.anime_lyrics.GeneratedFileInfo;
+import org.forever613.anime_lyrics.utils.DateUtils;
 import org.forever613.anime_lyrics.utils.HtmlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,16 +12,16 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public class MarkdownRenderer implements Renderer {
-    private TemplateEngine templateEngine;
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final TemplateEngine templateEngine;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public MarkdownRenderer(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
     }
 
     @Override
-    public String render(File draft, File target) {
-        String title;
+    public GeneratedFileInfo render(File draft, File target) {
+        GeneratedFileInfo info;
         File tempFile;
         try {
             tempFile = File.createTempFile("cache", ".html");
@@ -44,15 +46,19 @@ public class MarkdownRenderer implements Renderer {
             //noinspection ResultOfMethodCallIgnored
             reader.read(buffer);
             String content = String.valueOf(buffer);
-            title = HtmlUtils.findTitle(content);
+            info = HtmlUtils.splitInfo(content);
 
             Context context = new Context();
-            context.setVariable("title", title);
-            context.setVariable("content", content);
+            context.setVariable("title", info.getTitle());
+            context.setVariable("author", "forever613");
+            context.setVariable("createdTime", DateUtils.format(info.getPubdate()));
+            context.setVariable("modifiedTime", DateUtils.format(draft.lastModified()));
+            context.setVariable("content", info.getOtherContent());
             context.setVariable("lyricsJS", false);
 
+            String html = templateEngine.process("embed", context);
             try (Writer writer = new OutputStreamWriter(new FileOutputStream(target), StandardCharsets.UTF_8)) {
-                writer.write(templateEngine.process("embed", context));
+                writer.write(html);
             } catch (IOException e) {
                 logger.warn("I have just failed to generate an HTML \"{}\": {}", target.getName(), e.getMessage());
                 logger.debug("ST: ", e);
@@ -64,6 +70,6 @@ public class MarkdownRenderer implements Renderer {
             return null;
         }
         logger.info("I have generated the file \"{}\" successfully.", target.getName());
-        return title;
+        return info;
     }
 }

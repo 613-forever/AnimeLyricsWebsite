@@ -236,6 +236,8 @@ No parameters are required.
 It is processed into a `TIME` tag to provide semantic information for search engines.
 An optional parameter is used to generate the `value` attribute for the `TIME` tag.
 
+Though `Time Text` accepts any kinds of markup contents, a `value` should be provided if content is not plain.
+
 ##### Language-Specified Text
 
 `lang` or `l` for short.

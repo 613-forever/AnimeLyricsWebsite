@@ -6,7 +6,9 @@ import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.io.XMLWriter;
 import org.forever613.anime_lyrics.FileCollector;
+import org.forever613.anime_lyrics.GeneratedFileInfo;
 import org.forever613.anime_lyrics.SourceFileInfo;
+import org.forever613.anime_lyrics.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
@@ -23,7 +25,6 @@ public class SitemapRenderer implements Renderer {
     private final FileCollector fileCollector;
     private final String rootUrl;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     @SuppressWarnings("HttpUrlsUsage")
     private final String xmlns = "http://www.sitemaps.org/schemas/sitemap/0.9";
 
@@ -35,7 +36,7 @@ public class SitemapRenderer implements Renderer {
     public void addUrl(Element root, String url, Date lastMod, String changeFreq, double priority) {
         Element urlElement = root.addElement("url", xmlns);
         urlElement.addElement("loc", xmlns).addText(rootUrl + url);
-        urlElement.addElement("lastmod", xmlns).addText(format.format(lastMod));
+        urlElement.addElement("lastmod", xmlns).addText(DateUtils.format(lastMod));
         urlElement.addElement("changefreq", xmlns).addText(changeFreq);
         urlElement.addElement("priority", xmlns).addText(String.valueOf(priority));
     }
@@ -45,7 +46,7 @@ public class SitemapRenderer implements Renderer {
     }
 
     @Override
-    public String render(File draft, File target) {
+    public GeneratedFileInfo render(File draft, File target) {
         assert draft == null;
 
         Document doc = DocumentHelper.createDocument();
@@ -73,6 +74,6 @@ public class SitemapRenderer implements Renderer {
         }
 
         logger.info("I have generated the site map file successfully.");
-        return "sitemap";
+        return new GeneratedFileInfo("sitemap", null, null);
     }
 }

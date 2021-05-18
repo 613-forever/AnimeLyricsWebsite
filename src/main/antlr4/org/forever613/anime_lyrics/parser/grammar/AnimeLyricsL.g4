@@ -1,7 +1,8 @@
 lexer grammar AnimeLyricsL;
 
 NEWLINE: '\r'? '\n';
-COMMENT: '%' ~[\r\n]* NEWLINE -> skip;
+COMMENT: '%' (~'!' ~[\r\n]*)? NEWLINE -> skip;
+PARSE_ONLY_SIGN: '%!';
 fragment ESC: '\\' . | '\\' '\r'? '\n' ;
 fragment AUX: '@' ~[{[ s\u3000-] ;
 SPACE: ' ';
@@ -21,7 +22,7 @@ HASH: '#';
 HAT: '^';
 PLUS: '+';
 HORIZONTAL_RULE: '---';
-fragment CHAR: ([0-9a-zA-Z,.!?_/'-] | HCHAR | ESC);
+fragment CHAR: ([0-9a-zA-Z,.!?_/':-] | HCHAR | ESC);
 WORD: CHAR+;
 RAW: '`' (~[`\\] | ESC)+ '`' ;
 

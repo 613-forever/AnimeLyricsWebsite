@@ -9,9 +9,11 @@ import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.io.HTMLWriter;
 import org.dom4j.io.OutputFormat;
+import org.forever613.anime_lyrics.GeneratedFileInfo;
 import org.forever613.anime_lyrics.parser.grammar.AnimeLyricsL;
 import org.forever613.anime_lyrics.parser.grammar.AnimeLyricsP;
 import org.forever613.anime_lyrics.parser.grammar.AnimeLyricsPBaseVisitor;
+import org.forever613.anime_lyrics.utils.DateUtils;
 import org.forever613.anime_lyrics.utils.HtmlUtils;
 import org.forever613.anime_lyrics.utils.KanaUtils;
 import org.slf4j.Logger;
@@ -25,7 +27,7 @@ import java.util.*;
 
 public class Parser extends AnimeLyricsPBaseVisitor<Element> {
     Logger logger = LoggerFactory.getLogger(this.getClass());
-    String name;
+    String name, creationTime;
     TemplateParser templateParser;
     int lyricsStartLine = -1;
     static final String DEFAULT_LANG = "zh", JAPANESE_LANG = "ja", JAPANESE_ROMAJI = "ja-latn";
@@ -35,7 +37,7 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
         templateParser = new TemplateParser(templateEngine, this);
     }
 
-    public String parse(Reader reader, Writer writer) {
+    public GeneratedFileInfo parse(Reader reader, Writer writer) {
         try {
             AnimeLyricsL lexer = new AnimeLyricsL(CharStreams.fromReader(reader));
             AnimeLyricsP parser = new AnimeLyricsP(new BufferedTokenStream(lexer));
@@ -44,7 +46,7 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
             htmlWriter.setEscapeText(false);
             htmlWriter.setWriter(writer);
             htmlWriter.write(visitFile(parser.file()));
-            return name;
+            return new GeneratedFileInfo(name, DateUtils.fromFormatted(creationTime), null);
         } catch (IOException e) {
             logger.error("An exception is thrown when loading or writing: {}.", e.getMessage());
             logger.debug("The exception ST: ", e);
@@ -58,12 +60,10 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
 
     @Override
     public Element visitFile(AnimeLyricsP.FileContext ctx) {
-        Element root = DocumentHelper.createElement("main");
+        Element root = DocumentHelper.createElement("div");
         root.addAttribute("class", "anime_lyrics");
 
-        Element header = root.addElement("h1");
         name = HtmlUtils.escapeHtml(ctx.name().getText().trim());
-        header.addText(name);
 
         Element article = visitArticle(ctx.article());
         article.addAttribute("class", "article");
@@ -96,6 +96,8 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
             } else if (articleLineContext.lyrics() != null) {
                 Element lyrics_root = visitLyrics(articleLineContext.lyrics());
                 article.add(lyrics_root);
+            } else if (articleLineContext.parse_only() != null) {
+                visitMarkup_text(articleLineContext.parse_only().markup_text()); // ignore results
             }
         }
         return article;
@@ -332,10 +334,32 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
                 nodes.add(DocumentHelper.createElement("br"));
             } else if (node.time_text() != null) {
                 Element span = DocumentHelper.createElement("time");
-                if (node.time_text().start_time().time != null) {
-                    span.addAttribute("datetime", makeWord(node.time_text().start_time().time.getText()));
+                Token timeToken = node.time_text().start_time().time;
+                boolean pubDate = false;
+                if (timeToken != null) {
+                    String timeStr = timeToken.getText().substring(1);
+                    if (timeStr.charAt(0) == '!') {
+                        pubDate = true;
+                        timeStr = timeStr.substring(1);
+                    }
+                    if (!timeStr.isEmpty()) {
+                        String unescapedTime = makeWord(timeStr);
+                        span.addAttribute("datetime", unescapedTime);
+                        if (pubDate) {
+                            creationTime = unescapedTime;
+                            pubDate = false;
+                        }
+                    }
                 }
-                span.setContent(makeMarkup(node.time_text().markup_text()));
+                List<Node> timeContentNodes = makeMarkup(node.time_text().markup_text());
+                span.setContent(timeContentNodes);
+                if (pubDate) {
+                    StringBuilder sb = new StringBuilder();
+                    for (Node node1: timeContentNodes) {
+                        sb.append(node1.asXML());
+                    }
+                    creationTime = sb.toString();
+                }
                 nodes.add(span);
             } else if (node.link() != null) {
                 nodes.add(makeLink(node.link()));

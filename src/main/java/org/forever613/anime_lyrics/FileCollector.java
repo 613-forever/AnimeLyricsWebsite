@@ -1,6 +1,7 @@
 package org.forever613.anime_lyrics;
 
 import org.forever613.anime_lyrics.renderers.*;
+import org.forever613.anime_lyrics.utils.DateUtils;
 import org.forever613.anime_lyrics.utils.HtmlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,20 +111,26 @@ public class FileCollector {
     private void addFiles(String[] fileNames, Renderer renderer) {
         for (String fileName : fileNames) {
             File draft = new File(draftDir, fileName);
-            assert draft.exists();
+            if (!draft.exists()) {
+                logger.warn("I have listed a file but can not access it now. Skipping \"{}\"", fileName);
+                throw new IllegalStateException();
+            }
             String newFileName = fileName.substring(0, fileName.indexOf('.')) + ".html";
             File target = new File(targetDir, newFileName);
-            String title;
+            GeneratedFileInfo info;
             Date modifiedDate = new Date(draft.lastModified());
             if (!target.exists() || target.lastModified() < draft.lastModified()) {
-                title = renderer.render(draft, target);
+                info = renderer.render(draft, target);
                 updated = true;
             } else {
-                title = HtmlUtils.extractTitle(fileName, target);
+                info = HtmlUtils.extractInfo(fileName, target);
             }
-            if (title == null) continue; // failure
-            SourceFileInfo info = new SourceFileInfo(newFileName, title, modifiedDate);
-            addFile(info);
+            if (info == null || info.getTitle() == null) {
+                logger.warn("I think something must be wrong with \"{}\" to generate {}.", fileName, info);
+                continue; // failure
+            }
+            SourceFileInfo sInfo = new SourceFileInfo(newFileName, info.getTitle(), info.getPubdate(), modifiedDate);
+            addFile(sInfo);
         }
     }
 

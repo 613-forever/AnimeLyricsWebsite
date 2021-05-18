@@ -34,15 +34,16 @@ footer a:link {
     color: #333333;
 }
 /* font for languages */
+body {
+    font-size: 16px;
+}
 body, *[lang="zh"] {
     font-family: "PingFang SC", "Lantinghei SC", "Microsoft Yahei", "WenQuanYi Micro Hei", sans-serif;
     -webkit-font-smoothing: antialiased;
-    font-size: 16px;
 }
 *[lang="ja"] {
     font-family: "Hiragino Sans GB", "MS Gothic", "Yu Gothic", sans-serif;
     -webkit-font-smoothing: antialiased;
-    font-size: 16px;
 }
 *[lang="ja-latn"] {
     font-family: "Times New Roman", serif;
@@ -50,7 +51,6 @@ body, *[lang="zh"] {
 *[lang="x-ipa"] {
     font-family: "Doulos SIL", "Gentium Plus", "Claris SIL", "Times New Roman", serif;
     -webkit-font-smoothing: antialiased;
-    font-size: 16px;
     font-weight: 300;
 }
 /* patches for main #write area */
@@ -73,6 +73,35 @@ body, *[lang="zh"] {
 }
 #write .lyrics>p {
     margin-bottom: 0;
+}
+#write h1 {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+/* meta-data */
+.meta-data {
+    margin-bottom: 2em;
+    padding-bottom: 1em;
+    border-bottom: 3px double #eee;
+}
+.meta-data>div {
+    font-size: 8px;
+    color: #ccc;
+}
+.meta-data>div.author>span:before {
+    content: url("./author.svg");
+    vertical-align: middle;
+    margin-right: 0.5em;
+}
+.meta-data>div.created-at>span:before {
+    content: url("./created.svg");
+    vertical-align: middle;
+    margin-right: 0.5em;
+}
+.meta-data>div.last-modified-at>span:before {
+    content: url("./modified.svg");
+    vertical-align: middle;
+    margin-right: 0.5em;
 }
 /* black covers */
 .covered, .covered :link {

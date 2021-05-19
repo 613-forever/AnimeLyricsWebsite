@@ -71,12 +71,14 @@ public class TemplateParser {
         }
         case "e":
         case "external":
-        case "":
-        default: {
+        case "": {
             Context context = new Context();
             context.setVariable("literal", literal);
             context.setVariable("href", href);
             return process("templates", "external", context, false, false);
+        }
+        default: {
+            throw new TemplateParsingException(templateName);
         }
         }
     }

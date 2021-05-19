@@ -3,7 +3,6 @@ package org.forever613.anime_lyrics.renderers;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.dom4j.Namespace;
 import org.dom4j.io.XMLWriter;
 import org.forever613.anime_lyrics.FileCollector;
 import org.forever613.anime_lyrics.GeneratedFileInfo;
@@ -11,15 +10,11 @@ import org.forever613.anime_lyrics.SourceFileInfo;
 import org.forever613.anime_lyrics.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class SitemapRenderer implements Renderer {
     private final FileCollector fileCollector;
@@ -54,10 +49,12 @@ public class SitemapRenderer implements Renderer {
 
         addUrl(root, "", new Date(), "daily", 0.2);
         for (SourceFileInfo info: fileCollector.getArticles()) {
-            addUrl(root, info, "weekly",  0.8);
+            int past = DateUtils.difference(info.getModifiedDate(), new Date());
+            addUrl(root, info, past < 10 ? "weekly" : past < 50 ? "monthly" : "yearly",  0.8);
         }
         for (SourceFileInfo info: fileCollector.getHelpArticles()) {
-            addUrl(root, info,  "monthly", 0.4);
+            int past = DateUtils.difference(info.getModifiedDate(), new Date());
+            addUrl(root, info, past < 30 ? "monthly" : "yearly", 0.4);
         }
         for (SourceFileInfo info: fileCollector.getSysArticles()) {
             addUrl(root, info,  "yearly", 0.0);

@@ -34,8 +34,20 @@ footer a:link {
     color: #333333;
 }
 /* font for languages */
-body {
-    font-size: 16px;
+@media (min-width: 992px) {
+    html, body, #write {
+        font-size: 16px;
+    }
+}
+@media (min-width: 768px) and (max-width: 992px) {
+    html, body, #write {
+        font-size: 24px;
+    }
+}
+@media (max-width: 768px) {
+    html, body, #write {
+        font-size: 32px;
+    }
 }
 body, *[lang="zh"] {
     font-family: "PingFang SC", "Lantinghei SC", "Microsoft Yahei", "WenQuanYi Micro Hei", sans-serif;
@@ -61,17 +73,29 @@ body, *[lang="zh"] {
     content: url("./external-link.svg");
     vertical-align: middle;
 }
+@media (min-width: 768px) {
+    #write .lyrics_outer {
+        margin: 2em;
+        padding: 2em;
+        text-align: center;
+    }
+}
+@media (max-width: 768px) {
+    #write .lyrics_outer {
+        margin: 0.5em 0;
+        padding: 0.5em;
+        text-align: left;
+    }
+}
 #write .lyrics_outer {
-    text-align: center;
-    margin: 2em;
     border: #333333 1px solid;
-    padding: 2em;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
 #write .lyrics>p {
+    text-indent: 0;
     margin-bottom: 0;
 }
 #write h1 {

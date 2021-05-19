@@ -57,4 +57,8 @@ public class DateUtils {
         if (str == null) return null;
         return format(fromFormatted(str));
     }
+
+    public static int difference(Date lhs, Date rhs) {
+        return (int) ((lhs.getTime() - rhs.getTime()) / 86400000);
+    }
 }

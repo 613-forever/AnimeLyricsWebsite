@@ -355,7 +355,7 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
                 span.setContent(timeContentNodes);
                 if (pubDate) {
                     StringBuilder sb = new StringBuilder();
-                    for (Node node1: timeContentNodes) {
+                    for (Node node1 : timeContentNodes) {
                         sb.append(node1.asXML());
                     }
                     creationTime = sb.toString();
@@ -406,11 +406,18 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
 
     private Element makeLink(AnimeLyricsP.LinkContext linkContext) {
         String templateName = (linkContext.templ == null) ? "" : linkContext.templ.getText();
-        String html = templateParser.makeLinkTemplate(templateName, makeWords(linkContext.literal), linkContext.href.getText());
+        String html, literal = makeWords(linkContext.literal), href = linkContext.href.getText();
+        try {
+            html = templateParser.makeLinkTemplate(templateName, literal, href);
+        } catch (TemplateParsingException e) {
+            logger.warn(e.getMessage() + " (at " + linkContext.start.getLine() + ":" + linkContext.start.getCharPositionInLine() + "). Falling back to an external one.");
+            html = templateParser.makeLinkTemplate("", literal, href);
+        }
         try {
             return DocumentHelper.parseText(html).getRootElement();
         } catch (DocumentException e) {
-            logger.error("An exception is thrown when parsing a template named \"{}\"!", templateName);
+            logger.error("An exception is thrown when parsing a template named \"{}\" at {}:{}!", templateName,
+                    linkContext.start.getLine(), linkContext.start.getCharPositionInLine());
             logger.debug("HTML: {}", html);
             logger.debug("ST: ", e);
             throw (ParsingException) new ParsingException().initCause(e);

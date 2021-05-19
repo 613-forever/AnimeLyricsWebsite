@@ -2,7 +2,7 @@
 <html lang="zh" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head(title, links, scripts)">
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=750px, initial-scale=1, user-scalable=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.4, user-scalable=1" />
   <link rel="icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{./static/favicon.ico}"/>
   <link rel="shortcut icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{./static/favicon.ico}"/>
   <title th:utext="${title} + ' - 的歌词收藏册'">主页 - 的歌词收藏册</title>
@@ -20,7 +20,7 @@
 <div class="container">
   <header th:fragment="header">
     <div class="row">
-      <div class="col-md-10 col-xs-12">
+      <div class="col-md-10 col-sm-12">
         <div class="header-container">
           <a th:href="@{./}">
             <img src="../static/logo.svg" th:src="@{./static/logo.svg}" title="logo" alt="logo" id="logo"/>
@@ -32,12 +32,12 @@
   </header>
   <footer th:fragment="footer">
     <div class="row">
-      <div class="col-md-12 col-xs-12 text-center">
+      <div class="col-md-12 col-sm-12 text-center">
         <p>Copyright © 2021 forever613 | powered by <a rel="nofollow noopener noreferrer" target="_blank" href="https://github.com/613-forever/AnimeLyricsWebsite">613-forever/AnimeLyricsWebsite</a></p>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12 col-xs-12 text-center">
+      <div class="col-md-12 col-sm-12 text-center">
         <p>
           <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">
             <img alt="知识共享许可协议" title="知识共享许可协议" style="border-width:0"
@@ -48,7 +48,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12 col-xs-12 text-center">
+      <div class="col-md-12 col-sm-12 text-center">
         <p>本站内容版权所有，转载需注明原URL、保留署名并使用相同协议，允许进行演绎及二次创作，且禁止用于商业目的。</p>
       </div>
     </div>

@@ -10,6 +10,9 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,12 +22,14 @@ public class FileCollector {
 
     private final List<SourceFileInfo> articles, helpArticles, sysArticles;
     private final File draftDir, cacheDir, targetDir;
+    private final String copyOnlyDirName;
     private final String listFileName, sitemapFileName, robotsFileName;
     private final String rootUrl;
     private boolean updated = false;
 
     public FileCollector(String draftDirName, String cacheDirName, String targetDirName,
-                         String listFileName, String sitemapFileName, String robotsFileName, String rootUrlFileName) {
+                         String listFileName, String sitemapFileName, String robotsFileName, String rootUrlFileName,
+                         String copyOnlyDirName) {
         draftDir = new File(draftDirName);
         if (!draftDir.exists() || !draftDir.isDirectory()) {
             logger.error("I have not found the directory for drafts.");
@@ -55,6 +60,7 @@ public class FileCollector {
         this.listFileName = listFileName;
         this.sitemapFileName = sitemapFileName;
         this.robotsFileName = robotsFileName;
+        this.copyOnlyDirName = copyOnlyDirName;
         articles = new ArrayList<>();
         helpArticles = new ArrayList<>();
         sysArticles = new ArrayList<>();
@@ -105,6 +111,11 @@ public class FileCollector {
         if (!robotsFile.exists()) {
             templateResolver.setTemplateMode("TEXT");
             new RobotsRenderer(templateEngine, rootUrl, sitemapFileName).render(null, robotsFile);
+        }
+
+        File copyOnlyDir = new File(draftDir, copyOnlyDirName);
+        if (copyOnlyDir.exists()) {
+            recursiveCopy(copyOnlyDir, targetDir);
         }
     }
 
@@ -158,5 +169,25 @@ public class FileCollector {
 
     public List<SourceFileInfo> getSysArticles() {
         return sysArticles;
+    }
+
+    public void recursiveCopy(File src, File target) {
+        if (src.isDirectory()) {
+            File[] files = src.listFiles();
+            if (files == null) return;
+            for (File file : files) {
+                File targetFile = new File(target, file.getName());
+            }
+        } else if (src.isFile()) {
+            if (src.lastModified() > target.lastModified()) {
+                try {
+                    Files.copy(src.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    logger.info("I am copying \"{}\"", src.getPath());
+                } catch (IOException e) {
+                    logger.warn("I failed to copy \"{}\" to \"{}\".", src.getPath(), target.getPath());
+                    logger.debug("ST: ", e);
+                }
+            }
+        }
     }
 }

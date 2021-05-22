@@ -131,7 +131,7 @@ article .lyrics_outer {
     background-attachment: fixed;
 }
 article .lyrics {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.9);
 }
 /* black covers */
 .covered, .covered :link {

@@ -642,7 +642,14 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
                 literalText = literalText.substring(2);
                 capitalClass = "uppercase";
             }
-            String foreignWord = makeWord(text), literal = makeWord(literalText);
+            String foreignWord, literal;
+            if (text.equals("=")) {
+                literal = makeWord(literalText);
+                foreignWord = literal;
+            } else {
+                foreignWord = makeWord(text);
+                literal = makeWord(literalText);
+            }
 
             elements.realText.addText(literal);
             elements.bracketText.addText(literal);

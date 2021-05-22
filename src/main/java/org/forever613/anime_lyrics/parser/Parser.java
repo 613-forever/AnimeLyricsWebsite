@@ -180,9 +180,11 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
         if (mode) {
             lyrics_root = DocumentHelper.createElement("div");
             lyrics_root.addAttribute("class", "lyrics_outer");
+            if (background != null) {
+                lyrics_root.addAttribute("style", "background-image: url(\"" + background + "\")");
+            }
             lyrics = lyrics_root.addElement("section");
             lyrics.addAttribute("class", "lyrics");
-            lyrics_root.addAttribute("style", "background-image: url(\"" + background + "\")");
 
             String controlName = "lyrics-control";
             String html = templateParser.makeButtonTemplate(controlName, trans.toArray(new String[0]));

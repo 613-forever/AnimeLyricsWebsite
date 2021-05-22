@@ -3,4 +3,5 @@ gen/
 log/
 target/
 text/
-
+src/main/resources/WEB-INF/static/logo.svg
+src/main/resources/WEB-INF/static/favicon.ico

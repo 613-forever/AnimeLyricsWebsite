@@ -89,10 +89,6 @@ body, *[lang="zh"] {
 }
 #write .lyrics_outer {
     border: #333333 1px solid;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
 }
 #write .lyrics>p {
     text-indent: 0;
@@ -126,6 +122,16 @@ body, *[lang="zh"] {
     content: url("./modified.svg");
     vertical-align: middle;
     margin-right: 0.5em;
+}
+/* background-image */
+article .lyrics_outer {
+    background-size: contain;
+    background-position: center;
+    background-repeat: repeat;
+    background-attachment: fixed;
+}
+article .lyrics {
+    background-color: rgba(255, 255, 255, 0.8);
 }
 /* black covers */
 .covered, .covered :link {

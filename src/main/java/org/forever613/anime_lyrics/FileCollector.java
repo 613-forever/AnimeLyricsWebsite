@@ -135,13 +135,14 @@ public class FileCollector {
     }
 
     private void addFile(SourceFileInfo info) {
-        if (info.getTitle().startsWith("Help:")) {
+        String title = info.getTitle();
+        if (title.startsWith("Help:")) {
             helpArticles.add(info);
-        } else if (info.getTitle().startsWith("System:")) {
+        } else if (title.startsWith("System:")) {
             sysArticles.add(info);
-        } else //noinspection StatementWithEmptyBody
-            if (info.getTitle().startsWith("Hidden:")) {
-            // skip
+        } else if (title.startsWith("Hidden:")) {
+            logger.info("I am skipping the indexing for the file \"{}\" titled \"{}\" due to the prefix \"Hidden:\".",
+                    info.getFilename(), title);
         } else {
             articles.add(info);
         }

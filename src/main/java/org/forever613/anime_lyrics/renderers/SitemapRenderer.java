@@ -31,7 +31,7 @@ public class SitemapRenderer implements Renderer {
     public void addUrl(Element root, String url, Date lastMod, String changeFreq, double priority) {
         Element urlElement = root.addElement("url", xmlns);
         urlElement.addElement("loc", xmlns).addText(rootUrl + url);
-        urlElement.addElement("lastmod", xmlns).addText(DateUtils.format(lastMod));
+        urlElement.addElement("lastmod", xmlns).addText(DateUtils.formatDate(lastMod));
         urlElement.addElement("changefreq", xmlns).addText(changeFreq);
         urlElement.addElement("priority", xmlns).addText(String.valueOf(priority));
     }

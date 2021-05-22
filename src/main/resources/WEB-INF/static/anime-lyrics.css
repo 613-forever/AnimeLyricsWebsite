@@ -36,17 +36,17 @@ footer a:link {
 /* font for languages */
 @media (min-width: 992px) {
     html, body, #write {
-        font-size: 16px;
+        font-size: 24px;
     }
 }
 @media (min-width: 768px) and (max-width: 992px) {
     html, body, #write {
-        font-size: 24px;
+        font-size: 32px;
     }
 }
 @media (max-width: 768px) {
     html, body, #write {
-        font-size: 32px;
+        font-size: 48px;
     }
 }
 body, *[lang="zh"] {
@@ -54,7 +54,7 @@ body, *[lang="zh"] {
     -webkit-font-smoothing: antialiased;
 }
 *[lang="ja"] {
-    font-family: "Hiragino Sans GB", "MS Gothic", "Yu Gothic", sans-serif;
+    font-family: "Hiragino Sans GB", "Yu Gothic", "MS Gothic", sans-serif;
     -webkit-font-smoothing: antialiased;
 }
 *[lang="ja-latn"] {

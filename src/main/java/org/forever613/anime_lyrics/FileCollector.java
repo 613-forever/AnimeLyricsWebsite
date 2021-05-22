@@ -176,7 +176,11 @@ public class FileCollector {
             File[] files = src.listFiles();
             if (files == null) return;
             for (File file : files) {
+                if (file.getName().equals(".hidden")) {
+                    return;
+                }
                 File targetFile = new File(target, file.getName());
+                recursiveCopy(file, targetFile);
             }
         } else if (src.isFile()) {
             if (src.lastModified() > target.lastModified()) {

@@ -8,26 +8,29 @@
 <div class="container">
   <header th:replace="~{fragments :: header}"></header>
   <div class="row">
-    <main class="col-md-10">
+    <main class="col-md-10 col-sm-12">
       <div id="write">
         <div class="meta-data row">
           <h1 class="col-md-12" th:utext="${title}">标题</h1>
           <th:block th:if="${author!=null || createdTime!=null || modifiedTime!=null}">
-            <div class="author col-md-2 col-xs-4" th:if="${author != null}">
+            <div class="author col-md-2 col-sm-4" th:if="${author != null}">
               <span th:text="${author}"></span>
             </div>
-            <div class="created-at col-md-2 col-xs-4" th:if="${createdTime != null}">
+            <div class="created-at col-md-2 col-sm-4" th:if="${createdTime != null}">
               <span><time pubdate th:text="${createdTime}"></time></span>
             </div>
-            <div class="last-modified-at col-md-2 col-xs-4" th:if="${modifiedTime != null}">
+            <div class="last-modified-at col-md-2 col-sm-4" th:if="${modifiedTime != null}">
               <span><time th:text="${modifiedTime}"></time></span>
+            </div>
+            <div class="jump-to-lyrics col-md-2 col-sm-4" onclick="location.hash='#歌词'">
+              <span>跳转至歌词</span>
             </div>
           </th:block>
         </div>
         <th:block th:utext="${content}"/>
       </div>
     </main>
-    <aside class="visible-md hidden-xs col-md-2">
+    <aside class="visible-md hidden-sm col-md-2">
     </aside>
   </div>
   <footer th:replace="~{fragments :: footer}"></footer>

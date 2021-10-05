@@ -151,8 +151,8 @@ public class FileCollector {
             helpArticles.add(info);
         } else if (title.startsWith("System:")) {
             sysArticles.add(info);
-        } else if (title.startsWith("Hidden:")) {
-            logger.info("I am skipping the indexing for the file \"{}\" titled \"{}\" due to the prefix \"Hidden:\".",
+        } else if (title.startsWith("Hidden:") || title.startsWith("Draft:")) {
+            logger.info("I am skipping the file \"{}\" titled \"{}\" during indexing due to the prefix.",
                     info.getFilename(), title);
         } else {
             articles.add(info);

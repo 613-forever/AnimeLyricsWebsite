@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<svg xmlns="http://www.w3.org/2000/svg" height="16px" width="16px">
+<svg xmlns="http://www.w3.org/2000/svg" height="24px" width="24px">
     <style type="text/css">
         path{stroke:#1abc9c;fill:none;stroke-width:1}
     </style>
-    <path d="M1,1h6v3h-3v8h8v-3h3v6h-14z" />
-    <path d="M15,1h-6l2,2l-5,5l2,2l5-5l2,2z" />
+    <g transform="scale(1.5)">
+        <path d="M1,1h6v3h-3v8h8v-3h3v6h-14z" />
+        <path d="M15,1h-6l2,2l-5,5l2,2l5-5l2,2z" />
+    </g>
 </svg>

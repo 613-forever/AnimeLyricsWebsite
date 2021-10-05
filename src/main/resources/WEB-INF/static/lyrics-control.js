@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    $("div.jump-to-lyrics").click(function () {
+        $("html,body").animate({scrollTop: $(".aml-lyrics-control:first").offset().top}, 1000);
+    });
     $(".aml-lyrics-control").click(function () {
         let name = $(this).attr("data-alm-type");
         if ($(this).hasClass("active")) {

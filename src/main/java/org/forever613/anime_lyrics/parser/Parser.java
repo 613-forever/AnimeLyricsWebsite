@@ -733,8 +733,9 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
                 return new JapaneseTextNode().addText("&nbsp;").padNeither(); // replace with simple space
             }
             case 's':
+            case '\u2003':
             case '\u3000': {
-                return new JapaneseTextNode().addText("&emsp;", "&nbsp;").padNeither();
+                return new JapaneseTextNode().addText("\u3000", "&nbsp;").padNeither();
             }
             default:
                 logger.warn("Unrecognizable @-prepended character, @\"{}\"", c);

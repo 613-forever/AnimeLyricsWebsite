@@ -57,7 +57,7 @@ body, *[lang="zh"] {
     font-family: "Hiragino Sans GB", "Yu Gothic", "MS Gothic", sans-serif;
     -webkit-font-smoothing: antialiased;
 }
-*[lang="ja-latn"] {
+*[lang="ja-Latn"] {
     font-family: "Times New Roman", serif;
 }
 *[lang="x-ipa"] {

@@ -30,7 +30,7 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
     String name, creationTime;
     TemplateParser templateParser;
     int lyricsStartLine = -1;
-    static final String DEFAULT_LANG = "zh", JAPANESE_LANG = "ja", JAPANESE_ROMAJI = "ja-latn";
+    static final String DEFAULT_LANG = "zh", JAPANESE_LANG = "ja", JAPANESE_ROMAJI = "ja-Latn";
     Set<String> trans = new LinkedHashSet<>();
 
     public Parser(TemplateEngine templateEngine) {

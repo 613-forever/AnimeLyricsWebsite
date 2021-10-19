@@ -413,7 +413,7 @@ will generate
 <p class="furigana-text-line" lang="ja"><span data-alm-position="line-3-0" class=""><ruby>振<rt>ふ</rt></ruby>り<ruby>仮<rt>が</rt></ruby><ruby>名<rt>な</rt></ruby></span></p>
 <p class="kana-text-line" lang="ja"><span data-alm-position="line-3-0" class="">ふりがな</span></p>
 <p class="bracket-text-line" lang="ja"><span data-alm-position="line-3-0" class="">振(ふ)り仮(が)名(な)</span></p>
-<p class="romaji-text-line" lang="ja-latn"><span data-alm-position="line-3-0" class="">furigana</span></p>
+<p class="romaji-text-line" lang="ja-Latn"><span data-alm-position="line-3-0" class="">furigana</span></p>
 ```
 
 Every `P` tag is a line of lyrics, and every `SPAN` is a word.

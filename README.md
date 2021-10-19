@@ -82,3 +82,18 @@ static final String ROOT_URL_FILE_NAME = "url.txt";
 ## The ALM (Anime Lyrics Markup) Language
 
 See [ALM.md](ALM.md).
+
+## Language and Font
+
+Generated pages are naturally multilingual.
+Among CJKV, there are many subtle differences in characters within the same code point.
+As a result, we should change fonts for different languages.
+
+We use a large number of `lang` tags to tell them apart, and render them in different fonts.
+
+`lang="ja"` is normal Japanese text.
+`lang="ja-Latn"` is for Japanese *romaji*.
+
+By default, text are tagged `lang="zh"` because they are Chinese by default.
+Default language setting will be available in the future.
+`org.forever613.anime_lyrics.parser.Parser.DEFAULT_LANG` and templates should be modified for this.

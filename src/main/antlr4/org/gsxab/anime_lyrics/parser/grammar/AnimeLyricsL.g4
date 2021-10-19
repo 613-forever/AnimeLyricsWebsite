@@ -22,8 +22,7 @@ HASH: '#';
 HAT: '^';
 PLUS: '+';
 HORIZONTAL_RULE: '---';
-fragment CHAR: ([0-9a-zA-Z,.!?_/':-] | HCHAR | ESC);
-WORD: CHAR+;
+CHAR: ([0-9a-zA-Z,.!?_/':-] | HCHAR | ESC);
 RAW: '`' (~[`\\] | ESC)+ '`' ;
 
 mode PARAM;

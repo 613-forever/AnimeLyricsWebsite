@@ -4,7 +4,7 @@ A generator for static websites.
 
 Here, anime follows the second definition in wikipedia:
 
-> Anime (Japanese: アニメ, IPA: [aɲime] (About this soundlisten)) is hand-drawn and computer animation originating from Japan.
+> Anime (Japanese: アニメ, IPA: [aɲime]) is hand-drawn and computer animation originating from Japan.
 > In Japan and in Japanese, anime (a term derived from the English word animation) describes all animated works, regardless of style or origin. 
 > However, outside of Japan and in English, *anime is colloquial for Japanese animation and refers specifically to animation produced in Japan*.
 > Animation produced outside of Japan with similar style to Japanese animation is referred to as anime-influenced animation.

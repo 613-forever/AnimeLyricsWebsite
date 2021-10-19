@@ -10,7 +10,6 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;

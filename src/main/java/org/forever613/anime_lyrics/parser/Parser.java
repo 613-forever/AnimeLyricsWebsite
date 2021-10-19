@@ -248,14 +248,18 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
     private String makeWordOrPunctuation(AnimeLyricsP.Word_or_puncContext wordContext) {
         if (wordContext.PUNCTUATION() != null) {
             return HtmlUtils.escapeHtml(wordContext.PUNCTUATION().getText());
-        } else if (wordContext.WORD() != null) {
-            return makeWord(wordContext.WORD().getText());
+        } else if (wordContext.word() != null) {
+            return makeWord(wordContext.word());
         } else if (wordContext.RAW() != null) {
             String wrapped = wordContext.RAW().getText();
             String content = wrapped.substring(1, wrapped.length() - 1).replace("\\`", "`");
             return HtmlUtils.escapeHtml(content);
         }
         throw new IllegalStateException();
+    }
+
+    private String makeWord(AnimeLyricsP.WordContext ctx) {
+        return makeWord(ctx.getText());
     }
 
     private String makeWord(String text) {
@@ -389,9 +393,10 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
                 nodes.add(makeMarkupAteji(node.ateji()));
             } else if (node.ruby() != null) {
                 Element ruby = DocumentHelper.createElement("ruby");
-                ruby.addText(makeWord(node.ruby().literal.getText()));
+                RubyText rubyText = makeRuby(node.ruby());
+                ruby.addText(makeWord(rubyText.realText));
                 Element rt = ruby.addElement("rt");
-                rt.addText(makeWord(node.ruby().pron.getText()));
+                rt.addText(makeWord(rubyText.kanaText));
                 nodes.add(ruby);
             } else if (node.footnote_ref() != null) {
                 Element sup = DocumentHelper.createElement("sup");
@@ -531,6 +536,10 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
         }
     }
 
+    static class RubyText {
+        String realText, kanaText;
+    }
+
     private JapaneseTextNode makeLyricsMarkup(AnimeLyricsP.Lyrics_textContext plainContext) {
         JapaneseTextNode textNode = new JapaneseTextNode();
         for (AnimeLyricsP.Lyrics_elementContext node : plainContext.nodes) {
@@ -606,9 +615,10 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
             StringBuilder sb = new StringBuilder();
             for (AnimeLyricsP.Lyrics_sliceContext sliceContext : context.nodes) {
                 if (sliceContext.ruby() != null) {
-                    sb.append(sliceContext.ruby().literal.getText());
-                } else if (sliceContext.WORD() != null) {
-                    String text = sliceContext.WORD().getText();
+                    RubyText rubyText = makeRuby(sliceContext.ruby());
+                    sb.append(rubyText.realText);
+                } else if (sliceContext.CHAR() != null) {
+                    String text = sliceContext.CHAR().getText();
                     sb.append(text);
                 }
             }
@@ -670,10 +680,11 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
             List<String> realText = new ArrayList<>(), kanaText = new ArrayList<>();
             for (AnimeLyricsP.Lyrics_sliceContext sliceContext : context.nodes) {
                 if (sliceContext.ruby() != null) {
-                    realText.add(sliceContext.ruby().literal.getText());
-                    kanaText.add(sliceContext.ruby().pron.getText());
-                } else if (sliceContext.WORD() != null) {
-                    String text = sliceContext.WORD().getText();
+                    RubyText rubyText = makeRuby(sliceContext.ruby());
+                    realText.add(rubyText.realText);
+                    kanaText.add(rubyText.kanaText);
+                } else if (sliceContext.CHAR() != null) {
+                    String text = sliceContext.CHAR().getText();
                     realText.add(text);
                     kanaText.add(text);
                 }
@@ -719,6 +730,18 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
             }
         }
         return elements;
+    }
+
+    private RubyText makeRuby(AnimeLyricsP.RubyContext ctx) {
+        RubyText rubyText = new RubyText();
+        if (ctx.braced_ruby() != null) {
+            rubyText.realText = ctx.braced_ruby().literal.getText();
+            rubyText.kanaText = ctx.braced_ruby().pron.getText();
+        } else if (ctx.unbraced_ruby() != null) {
+            rubyText.realText = ctx.unbraced_ruby().literal.getText();
+            rubyText.kanaText = ctx.unbraced_ruby().pron.getText();
+        }
+        return rubyText;
     }
 
     private JapaneseTextNode makeLyricsPunctuation(Token token) {

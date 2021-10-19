@@ -11,6 +11,30 @@ A generator for the static website ['s Anime Lyrics Collection](https://anime-ly
 ```shell
 java -jar AnimeLyrics-X.X.X-jar-with-dependencies.jar
 ```
+will simply start the engine, rendering from `text/draft` to `text/target`, also using `text/cache`,
+and copy `text/draft/copy_only` to `text/target`, relative to current dir.
+
+Parameters and their default values are as follows:
+```plain
+args.length > 1 ? args[1] : DRAFT_DIR,
+args.length > 2 ? args[2] : CACHE_DIR,
+args.length > 3 ? args[3] : TARGET_DIR,
+args.length > 4 ? args[4] : LIST_FILE_NAME,
+args.length > 5 ? args[5] : SITEMAP_FILE_NAME,
+args.length > 6 ? args[6] : ROBOTS_FILE_NAME,
+args.length > 7 ? args[7] : ROOT_URL_FILE_NAME,
+args.length > 8 ? args[8] : COPY_ONLY_DIR_NAME
+
+static final String DRAFT_DIR = "./text/draft/";
+static final String CACHE_DIR = "./text/cache/";
+static final String TARGET_DIR = "./text/target/";
+
+static final String COPY_ONLY_DIR_NAME = "copy_only"; // relative to DRAFT_DIR, "./text/target/copy_only"
+static final String LIST_FILE_NAME = "List.html";
+static final String SITEMAP_FILE_NAME = "Sitemap.xml";
+static final String ROBOTS_FILE_NAME = "robots.txt";
+static final String ROOT_URL_FILE_NAME = "url.txt";
+```
 
 ## Features
 
@@ -98,6 +122,8 @@ An escaped line break will be handled as if there are neither characters, nor a 
 
 #### Text-Like Elements:
 
+Prerequisite knowledge: 
+
 `RUBY` is an HTML tag to annotate pronunciations.
 
 For example:
@@ -123,6 +149,12 @@ In ALM, the tag above should be marked as:
 Wrap the attached *Kanji* in braces, and the pronunciation in brackets.
 I have considered removing braces for single characters,
 only to end up in colliding with brackets in markdown-styled links.
+
+Since v1.1, braces for *furigana*s above a single character can be omitted.
+```text
+振[ふ]り仮[が]名[な]
+```
+But when brackets are followed by another parenthesis-like characters, braces should not be omitted, to avoid ambiguity.
 
 ##### Writing and Singing Different Words
 

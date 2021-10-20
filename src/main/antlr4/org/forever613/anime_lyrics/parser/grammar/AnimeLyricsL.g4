@@ -55,6 +55,7 @@ TRANS: 't' | 'trans';
 META: 'm' | 'meta';
 MAIN: 'main';
 VALUE: '=' ~'>'+;
+AUTHOR: 'a' | 'author';
 TIME: 'ti' | 'time';
 
 mode WILD; // do not recognize anything until we pop it

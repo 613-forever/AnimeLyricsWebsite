@@ -18,6 +18,7 @@
 
 package org.forever613.anime_lyrics.renderers;
 
+import org.forever613.anime_lyrics.Config;
 import org.forever613.anime_lyrics.GeneratedFileInfo;
 import org.forever613.anime_lyrics.utils.DateUtils;
 import org.forever613.anime_lyrics.utils.HtmlUtils;
@@ -67,8 +68,11 @@ public class MarkdownRenderer implements Renderer {
             info = HtmlUtils.splitInfo(content);
 
             Context context = new Context();
+            context.setVariable("nameTitle", Config.getInstance().getNameTitle());
+            context.setVariable("nameFooter", Config.getInstance().getNameFooter());
+
             context.setVariable("title", info.getTitle());
-            context.setVariable("author", "forever613");
+            context.setVariable("author", info.getAuthor());
             context.setVariable("createdTime", DateUtils.format(info.getPubdate()));
             context.setVariable("modifiedTime", DateUtils.format(draft.lastModified()));
             context.setVariable("content", info.getOtherContent());

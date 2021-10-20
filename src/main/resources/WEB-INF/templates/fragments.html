@@ -1,11 +1,29 @@
+<!--
+  ~ This file is part of AnimeLyricsWebsite.
+  ~ Copyright (C) 2021 613_forever
+  ~
+  ~ AnimeLyricsWebsite is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ any later version.
+  ~
+  ~ AnimeLyricsWebsite is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with AnimeLyricsWebsite. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <!DOCTYPE html>
 <html lang="zh" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="head(title, links, scripts)">
+<head th:fragment="head(nameTitle, title, links, scripts)">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=0.4, user-scalable=1" />
   <link rel="icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{./static/favicon.ico}"/>
   <link rel="shortcut icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{./static/favicon.ico}"/>
-  <title th:utext="${title} + ' - 的歌词收藏册'">主页 - 的歌词收藏册</title>
+  <title th:utext="${title} + ' - ' + ${nameTitle} + '的歌词收藏册'">主页 - 的歌词收藏册</title>
   <link rel="stylesheet" type="text/css" href="../tmp/bootstrap.css"
         th:href="@{'https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css'}"/>
   <script type="application/javascript" src="../tmp/jquery.js"
@@ -18,22 +36,22 @@
 </head>
 <body>
 <div class="container">
-  <header th:fragment="header">
+  <header th:fragment="header(nameTitle)">
     <div class="row">
       <div class="col-md-10 col-sm-12">
         <div class="header-container">
           <a th:href="@{./}">
             <img src="../static/logo.svg" th:src="@{./static/logo.svg}" title="logo" alt="logo" id="logo"/>
-            <span id="nav-title">的歌词收藏册</span>
+            <span id="nav-title" th:text="${nameTitle} + '的歌词收藏册'">的歌词收藏册</span>
           </a>
         </div>
       </div>
     </div>
   </header>
-  <footer th:fragment="footer">
+  <footer th:fragment="footer(nameTitle)">
     <div class="row">
       <div class="col-md-12 col-sm-12 text-center text-small">
-        <p>Copyright for translations: 2021 forever613 | Copyright for songs: original creators |
+        <p>Copyright for translations: 2021 <span th:text="${nameTitle}"></span> | Copyright for songs: original creators |
           Powered by <a rel="nofollow noopener noreferrer" target="_blank" href="https://github.com/613-forever/AnimeLyricsWebsite">613-forever/AnimeLyricsWebsite</a></p>
       </div>
     </div>

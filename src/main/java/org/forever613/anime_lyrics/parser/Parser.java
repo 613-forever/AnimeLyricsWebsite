@@ -44,8 +44,8 @@ import java.io.Writer;
 import java.util.*;
 
 public class Parser extends AnimeLyricsPBaseVisitor<Element> {
-    Logger logger = LoggerFactory.getLogger(this.getClass());
-    String name, creationTime;
+    static final private Logger LOGGER = LoggerFactory.getLogger(Parser.class);
+    String name, creationTime, author;
     TemplateParser templateParser;
     int lyricsStartLine = -1;
     static final String DEFAULT_LANG = "zh", JAPANESE_LANG = "ja", JAPANESE_ROMAJI = "ja-Latn";
@@ -64,10 +64,14 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
             htmlWriter.setEscapeText(false);
             htmlWriter.setWriter(writer);
             htmlWriter.write(visitFile(parser.file()));
-            return new GeneratedFileInfo(name, DateUtils.fromFormatted(creationTime), null);
+            GeneratedFileInfo info = new GeneratedFileInfo();
+            info.setTitle(name);
+            if (author != null) info.setAuthor(author);
+            info.setPubdate(DateUtils.fromFormatted(creationTime));
+            return info;
         } catch (IOException e) {
-            logger.error("An exception is thrown when loading or writing: {}.", e.getMessage());
-            logger.debug("The exception ST: ", e);
+            LOGGER.error("An exception is thrown when loading or writing: {}.", e.getMessage());
+            LOGGER.debug("The exception ST: ", e);
             throw new ParsingException();
         }
     }
@@ -150,17 +154,17 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
         try {
             html = templateParser.makeTemplate(name, params);
         } catch (ParsingException e) {
-            logger.error("At {}:{}, an exception is thrown handling named template \"{}\" with params {}.",
+            LOGGER.error("At {}:{}, an exception is thrown handling named template \"{}\" with params {}.",
                     ctx.start.getLine(), ctx.start.getCharPositionInLine(), name, params);
             throw e;
         }
         try {
             return DocumentHelper.parseText(html).getRootElement();
         } catch (DocumentException e) {
-            logger.error("At {}:{}, an exception is thrown handling named template {}.",
+            LOGGER.error("At {}:{}, an exception is thrown handling named template {}.",
                     ctx.start.getLine(), ctx.start.getCharPositionInLine(), name);
-            logger.debug("HTML: {}", html);
-            logger.debug("ST: ", e);
+            LOGGER.debug("HTML: {}", html);
+            LOGGER.debug("ST: ", e);
             throw (ParsingException) new ParsingException().initCause(e);
         }
     }
@@ -212,10 +216,10 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
                 lyricsLines.set(0, node);
                 lyricsLines.add(node.createCopy());
             } catch (DocumentException e) {
-                logger.error("At {}:{}, an exception is thrown handling control template {}",
+                LOGGER.error("At {}:{}, an exception is thrown handling control template {}",
                         ctx.start.getLine(), ctx.start.getCharPositionInLine(), controlName);
-                logger.debug("HTML: {}", html);
-                logger.debug("ST: ", e);
+                LOGGER.debug("HTML: {}", html);
+                LOGGER.debug("ST: ", e);
                 throw (ParsingException) new ParsingException().initCause(e);
             }
         } else {
@@ -359,7 +363,7 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
             } else if (node.time_text() != null) {
                 Element span = DocumentHelper.createElement("time");
                 Token timeToken = node.time_text().start_time().time;
-                boolean pubDate = false;
+                boolean pubDate = false; // use this as pubDate, and creationTime field is not filled yet
                 if (timeToken != null) {
                     String timeStr = timeToken.getText().substring(1);
                     if (timeStr.charAt(0) == '!') {
@@ -385,6 +389,15 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
                     creationTime = sb.toString();
                 }
                 nodes.add(span);
+            } else if (node.author_text() != null) {
+                Element span = DocumentHelper.createElement("span");
+                List<Node> authorTextNodes = makeMarkup(node.author_text().markup_text());
+                span.setContent(authorTextNodes);
+                StringBuilder sb = new StringBuilder();
+                for (Node node1 : authorTextNodes) {
+                    sb.append(node1.asXML());
+                }
+                author = sb.toString();
             } else if (node.link() != null) {
                 nodes.add(makeLink(node.link()));
             } else if (node.words() != null) {
@@ -435,16 +448,16 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
         try {
             html = templateParser.makeLinkTemplate(templateName, literal, href);
         } catch (TemplateParsingException e) {
-            logger.warn(e.getMessage() + " (at " + linkContext.start.getLine() + ":" + linkContext.start.getCharPositionInLine() + "). Falling back to an external one.");
+            LOGGER.warn(e.getMessage() + " (at " + linkContext.start.getLine() + ":" + linkContext.start.getCharPositionInLine() + "). Falling back to an external one.");
             html = templateParser.makeLinkTemplate("", literal, href);
         }
         try {
             return DocumentHelper.parseText(html).getRootElement();
         } catch (DocumentException e) {
-            logger.error("An exception is thrown when parsing a template named \"{}\" at {}:{}!", templateName,
+            LOGGER.error("An exception is thrown when parsing a template named \"{}\" at {}:{}!", templateName,
                     linkContext.start.getLine(), linkContext.start.getCharPositionInLine());
-            logger.debug("HTML: {}", html);
-            logger.debug("ST: ", e);
+            LOGGER.debug("HTML: {}", html);
+            LOGGER.debug("ST: ", e);
             throw (ParsingException) new ParsingException().initCause(e);
         }
     }
@@ -779,7 +792,7 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
                 return new JapaneseTextNode().addText("\u3000", "&nbsp;").padNeither();
             }
             default:
-                logger.warn("Unrecognizable @-prepended character, @\"{}\"", c);
+                LOGGER.warn("Unrecognizable @-prepended character, @\"{}\"", c);
                 throw new IllegalArgumentException();
             }
         } else if (c >= '\uFF01' && c <= '\uFF5E') {
@@ -822,7 +835,7 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
                 return new JapaneseTextNode().addText("…", "...").padOnlyAfterThis();
             }
             case '　': { // 3000
-                logger.warn("I have met a full-width space without an @ sign prepended at {}:{} and considered it a normal space.",
+                LOGGER.warn("I have met a full-width space without an @ sign prepended at {}:{} and considered it a normal space.",
                         token.getLine(), token.getCharPositionInLine());
                 return new JapaneseTextNode().padOnlyAfterThis();
             }
@@ -863,7 +876,7 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
                 return new JapaneseTextNode().addText("】", "]").padOnlyAfterThis();
             }
             default:
-                logger.warn("I have met an unidentified punctuation at {}:{} and skipped it.",
+                LOGGER.warn("I have met an unidentified punctuation at {}:{} and skipped it.",
                         token.getLine(), token.getCharPositionInLine());
                 return new JapaneseTextNode();
             }

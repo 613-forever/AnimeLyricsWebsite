@@ -18,6 +18,7 @@
 
 package org.forever613.anime_lyrics.renderers;
 
+import org.forever613.anime_lyrics.Config;
 import org.forever613.anime_lyrics.FileCollector;
 import org.forever613.anime_lyrics.GeneratedFileInfo;
 import org.slf4j.Logger;
@@ -43,6 +44,9 @@ public class ListFileRenderer implements Renderer {
         assert draft == null;
 
         Context context = new Context();
+        context.setVariable("nameTitle", Config.getInstance().getNameTitle());
+        context.setVariable("nameFooter", Config.getInstance().getNameFooter());
+
         context.setVariable("articles", fileCollector.getArticles());
         context.setVariable("helpArticles", fileCollector.getHelpArticles());
         context.setVariable("sysArticles", fileCollector.getSysArticles());
@@ -56,6 +60,8 @@ public class ListFileRenderer implements Renderer {
         }
 
         logger.info("I have generated the index page successfully.");
-        return new GeneratedFileInfo("index", null, null);
+        GeneratedFileInfo info = new GeneratedFileInfo();
+        info.setTitle("index");
+        return info;
     }
 }

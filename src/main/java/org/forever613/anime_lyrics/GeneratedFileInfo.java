@@ -21,32 +21,58 @@ package org.forever613.anime_lyrics;
 import java.util.Date;
 
 public class GeneratedFileInfo {
-    private final String title;
-    private final Date pubdate;
-    private final String otherContent;
+    private String author;
+    private String title;
+    private Date pubdate;
+    private String otherContent;
 
-    public GeneratedFileInfo(String title, Date pubdate, String otherContent) {
-        this.title = title;
-        this.pubdate = pubdate;
-        this.otherContent = otherContent;
+    public GeneratedFileInfo() {
+        this.author = Config.getInstance().getNameFooter();
+        this.title = "untitled";
+        this.pubdate = new Date();
+        this.otherContent = "";
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getTitle() {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public Date getPubdate() {
         return pubdate;
+    }
+
+    public void setPubdate(Date pubdate) {
+        this.pubdate = pubdate;
     }
 
     public String getOtherContent() {
         return otherContent;
     }
 
+    public void setOtherContent(String otherContent) {
+        this.otherContent = otherContent;
+    }
+
     @Override
     public String toString() {
-        return "GeneratedFileInfo{title='" + title +
-                "', pubdate=" + (pubdate != null ? pubdate : "auto") + ", otherContent=" +
-                (otherContent != null ? "string of length(" + otherContent.length() + ")" : "auto") + "}";
+        final StringBuffer sb = new StringBuffer("GeneratedFileInfo{");
+        sb.append("author='").append(author).append('\'');
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", pubdate=").append(pubdate);
+        sb.append(", otherContent='").append(otherContent).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

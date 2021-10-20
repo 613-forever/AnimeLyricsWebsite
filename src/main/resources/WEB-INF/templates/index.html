@@ -1,12 +1,30 @@
+<!--
+  ~ This file is part of AnimeLyricsWebsite.
+  ~ Copyright (C) 2021 613_forever
+  ~
+  ~ AnimeLyricsWebsite is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ any later version.
+  ~
+  ~ AnimeLyricsWebsite is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with AnimeLyricsWebsite. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <!DOCTYPE html>
 <html lang="zh">
-<head th:replace="~{fragments :: head(主页,~{::link},~{::scripts})}">
+<head th:replace="~{fragments :: head(${nameTitle}, 主页,~{::link},~{::scripts})}">
   <meta charset="UTF-8">
   <title>主页 - 的歌词收藏册</title>
 </head>
 <body>
 <div class="container">
-  <header th:replace="~{fragments :: header}"></header>
+  <header th:replace="~{fragments :: header(${nameTitle})}"></header>
   <article id="write">
     <h2>内容页面列表</h2>
     <table>
@@ -40,7 +58,7 @@
       </li>
     </ul>
   </article>
-  <footer th:replace="~{fragments :: footer}"></footer>
+  <footer th:replace="~{fragments :: footer(${nameFooter})}"></footer>
 </div>
 </body>
 </html>

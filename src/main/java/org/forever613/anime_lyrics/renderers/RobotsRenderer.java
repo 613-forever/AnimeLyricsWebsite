@@ -18,6 +18,7 @@
 
 package org.forever613.anime_lyrics.renderers;
 
+import org.forever613.anime_lyrics.Config;
 import org.forever613.anime_lyrics.FileCollector;
 import org.forever613.anime_lyrics.GeneratedFileInfo;
 import org.slf4j.Logger;
@@ -31,12 +32,10 @@ import java.nio.charset.StandardCharsets;
 public class RobotsRenderer implements Renderer {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final TemplateEngine templateEngine;
-    private final String rootUrl;
     private final String sitemap;
 
-    public RobotsRenderer(TemplateEngine templateEngine, String rootUrl, String sitemap) {
+    public RobotsRenderer(TemplateEngine templateEngine, String sitemap) {
         this.templateEngine = templateEngine;
-        this.rootUrl = rootUrl;
         this.sitemap = sitemap;
     }
 
@@ -45,7 +44,9 @@ public class RobotsRenderer implements Renderer {
         assert draft == null;
 
         Context context = new Context();
-        context.setVariable("url", rootUrl);
+        context.setVariable("nameTitle", Config.getInstance().getNameTitle());
+        context.setVariable("nameFooter", Config.getInstance().getNameFooter());
+        context.setVariable("url", Config.getInstance().getRootUrl());
         context.setVariable("sitemap", sitemap);
 
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(target), StandardCharsets.UTF_8)) {
@@ -57,6 +58,8 @@ public class RobotsRenderer implements Renderer {
         }
 
         logger.info("I have generated the robots.txt successfully.");
-        return new GeneratedFileInfo("robots.txt", null, null);
+        GeneratedFileInfo info = new GeneratedFileInfo();
+        info.setTitle("robots.txt");
+        return info;
     }
 }

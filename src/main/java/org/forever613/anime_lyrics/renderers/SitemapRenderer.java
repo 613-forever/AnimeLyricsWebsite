@@ -89,6 +89,8 @@ public class SitemapRenderer implements Renderer {
         }
 
         logger.info("I have generated the site map file successfully.");
-        return new GeneratedFileInfo("sitemap", null, null);
+        GeneratedFileInfo info = new GeneratedFileInfo();
+        info.setTitle("sitemap.xml");
+        return info;
     }
 }

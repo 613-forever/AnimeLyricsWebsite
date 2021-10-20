@@ -2,7 +2,7 @@
 
 A generator for static websites.
 
-Here, anime follows the second definition in wikipedia:
+Here, the word anime follows the second definition in wikipedia:
 
 > Anime (Japanese: アニメ, IPA: [aɲime]) is hand-drawn and computer animation originating from Japan.
 > In Japan and in Japanese, anime (a term derived from the English word animation) describes all animated works, regardless of style or origin. 
@@ -10,6 +10,17 @@ Here, anime follows the second definition in wikipedia:
 > Animation produced outside of Japan with similar style to Japanese animation is referred to as anime-influenced animation.
 > 
 > -- [Anime - Wikipedia](https://en.wikipedia.org/wiki/Anime)
+
+## License
+
+This project AnimeLyricsWebsite, is free software under AGPL-3.0-or-later.
+You can redistribute it and/or modify it under the terms of AGPL-3.0-or-later.
+
+This project is distributed without any warranty or liability.
+
+Every derivation should be under AGPL-3.0-or-later, too.
+The license applies only to the source code.
+Any execution-generated source can be used arbitrarily.
 
 ## Introduction
 

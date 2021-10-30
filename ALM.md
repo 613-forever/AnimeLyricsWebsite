@@ -506,7 +506,7 @@ For example, テレビ should be transcripted as terebi(*television*).
 
 We can generate it as:
 ```text
-{テレビ}(+television)
+{テレビ}+(television)
 ```
 
 Note that only *kana* are allowed in this form.

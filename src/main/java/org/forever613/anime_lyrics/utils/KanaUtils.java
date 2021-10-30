@@ -407,7 +407,7 @@ public class KanaUtils {
                 if (c == 'ん' || c == 'ン') {
                     pointer.next();
                     c = pointer.current();
-                    if (/*c != '/' && c != '@'*/ isKana(c)) {
+                    if (/*c != '/' && c != '@'*/ isKana(c) && c != 'っ' && c != 'ッ') {
                         Syllable next = splitKana(c);
                         switch (next.c) {
                         // case B:

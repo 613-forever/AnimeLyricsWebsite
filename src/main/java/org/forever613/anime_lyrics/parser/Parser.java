@@ -243,7 +243,7 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
             String lang = token != null ? token.getText().substring(1) : DEFAULT_LANG;
             trans.add(lang);
             line.addAttribute("lang", lang);
-            line.addAttribute("class", "trans-" + lang + "-text-line");
+            line.addAttribute("class", "trans-text-line trans-" + lang + "-text-line");
             elements.add(line);
         } else {
             elements.add(DocumentHelper.createElement("br"));

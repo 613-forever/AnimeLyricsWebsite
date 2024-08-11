@@ -148,13 +148,19 @@ article .lyrics {
     background-color: rgba(255, 255, 255, 0.9);
 }
 /* black covers */
-.covered, .covered :link {
+.covered {
     color: #333;
     background-color: #333;
+}
+.covered * {
+    visibility: hidden;
 }
 .covered:hover {
     color: #fff;
     background-color: #333;
+}
+.covered:hover * {
+    visibility: visible;
 }
 .covered :link:hover {
     color: #1abc9c;

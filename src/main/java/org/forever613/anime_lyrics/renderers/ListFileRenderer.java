@@ -28,6 +28,7 @@ import org.thymeleaf.context.Context;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 public class ListFileRenderer implements Renderer {
     private final TemplateEngine templateEngine;
@@ -52,6 +53,7 @@ public class ListFileRenderer implements Renderer {
         context.setVariable("sysArticles", fileCollector.getSysArticles());
 
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(target), StandardCharsets.UTF_8)) {
+        try (Writer writer = new OutputStreamWriter(Files.newOutputStream(target.toPath()), StandardCharsets.UTF_8)) {
             writer.write(templateEngine.process("index", context));
         } catch (IOException e) {
             logger.warn("I have just failed to generate the index page. " + e.getMessage());

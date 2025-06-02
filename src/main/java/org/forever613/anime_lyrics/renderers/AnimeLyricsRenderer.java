@@ -30,6 +30,7 @@ import org.thymeleaf.context.Context;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 public class AnimeLyricsRenderer implements Renderer {
     private final TemplateEngine templateEngine;
@@ -42,7 +43,7 @@ public class AnimeLyricsRenderer implements Renderer {
     @Override
     public GeneratedFileInfo render(File draft, File target) {
         GeneratedFileInfo info;
-        try (Reader reader = new InputStreamReader(new FileInputStream(draft), StandardCharsets.UTF_8)) {
+        try (Reader reader = new InputStreamReader(Files.newInputStream(draft.toPath()), StandardCharsets.UTF_8)) {
             StringWriter stringWriter = new StringWriter();
             logger.debug("I am planning to generate \"{}\" from \"{}\"", target.getName(), draft.getName());
 
@@ -70,7 +71,7 @@ public class AnimeLyricsRenderer implements Renderer {
             context.setVariable("scripts", parser.getTemplateParser().getRequiredJS());
 
             String html = templateEngine.process("embed", context);
-            try (Writer writer = new OutputStreamWriter(new FileOutputStream(target), StandardCharsets.UTF_8)) {
+            try (Writer writer = new OutputStreamWriter(Files.newOutputStream(target.toPath()), StandardCharsets.UTF_8)) {
                 writer.write(html);
             } catch (IOException e) {
                 logger.warn("I have just failed to generate file \"{}\" when writing : {}", target.getName(), e.getMessage());

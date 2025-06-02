@@ -1,5 +1,6 @@
 User-agent: *
 Disallow: /static/*
+Allow: /
 Allow: /static/*.js
 Allow: /static/*.css
 Sitemap: [(${url})][(${sitemap})]

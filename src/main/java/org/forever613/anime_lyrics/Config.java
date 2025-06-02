@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 public class Config {
     private static final Logger LOGGER = LoggerFactory.getLogger(Config.class);
@@ -37,7 +38,7 @@ public class Config {
         if (instance != null) {
             throw new IllegalStateException();
         }
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8))) {
             instance = new Config();
             String buffer = reader.readLine();
             while (buffer != null) {

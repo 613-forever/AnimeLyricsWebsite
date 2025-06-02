@@ -29,6 +29,7 @@ import org.thymeleaf.context.Context;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 public class MarkdownRenderer implements Renderer {
     private final TemplateEngine templateEngine;
@@ -60,7 +61,7 @@ public class MarkdownRenderer implements Renderer {
             logger.debug("ST: ", e);
             return null;
         }
-        try (Reader reader = new InputStreamReader(new FileInputStream(tempFile), StandardCharsets.UTF_8)) {
+        try (Reader reader = new InputStreamReader(Files.newInputStream(tempFile.toPath()), StandardCharsets.UTF_8)) {
             char[] buffer = new char[(int) tempFile.length()];
             //noinspection ResultOfMethodCallIgnored
             reader.read(buffer);
@@ -79,7 +80,7 @@ public class MarkdownRenderer implements Renderer {
             context.setVariable("lyricsJS", false);
 
             String html = templateEngine.process("embed", context);
-            try (Writer writer = new OutputStreamWriter(new FileOutputStream(target), StandardCharsets.UTF_8)) {
+            try (Writer writer = new OutputStreamWriter(Files.newOutputStream(target.toPath()), StandardCharsets.UTF_8)) {
                 writer.write(html);
             } catch (IOException e) {
                 logger.warn("I have just failed to generate an HTML \"{}\": {}", target.getName(), e.getMessage());

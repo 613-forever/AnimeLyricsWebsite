@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>谷歌 AdSense 接入模板</title>
+</head>
+<body>
+<div class="container">
+  <meta th:fragment="google-ads-meta(googleAdSenseClient)" name="google-adsense-account" th:content="${googleAdSenseClient}">
+  <div th:fragment="google-ads-header(googleAdSenseClient, googleAdSenseSlot)">
+    <script async th:src="'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + ${googleAdSenseClient}"
+            crossorigin="anonymous"></script>
+    <!-- anime-lyrics -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         th:data-ad-client="${googleAdSenseClient}"
+         th:data-ad-slot="${googleAdSenseSlot}"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+  <div th:fragment="google-ads-footer(googleAdSenseClient, googleAdSenseSlot)">
+    <script async th:src="'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + ${googleAdSenseClient}"
+            crossorigin="anonymous"></script>
+    <!-- anime-lyrics -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         th:data-ad-client="${googleAdSenseClient}"
+         th:data-ad-slot="${googleAdSenseSlot}"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+</div>
+
+</body>
+</html>

@@ -30,6 +30,7 @@ import org.thymeleaf.context.Context;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Map;
 
 public class MarkdownRenderer implements Renderer {
     private final TemplateEngine templateEngine;
@@ -78,6 +79,13 @@ public class MarkdownRenderer implements Renderer {
             context.setVariable("modifiedTime", DateUtils.format(draft.lastModified()));
             context.setVariable("content", info.getOtherContent());
             context.setVariable("lyricsJS", false);
+
+            // Make it a plugin later.
+            Map<String, String> otherConfigMap = Config.getInstance().getOtherConfigMap();
+            if (!otherConfigMap.isEmpty()) {
+                context.setVariable("googleAdSenseClient", otherConfigMap.get("googleAdSenseClient"));
+                context.setVariable("googleAdSenseSlot", otherConfigMap.get("googleAdSenseSlot"));
+            }
 
             String html = templateEngine.process("embed", context);
             try (Writer writer = new OutputStreamWriter(Files.newOutputStream(target.toPath()), StandardCharsets.UTF_8)) {

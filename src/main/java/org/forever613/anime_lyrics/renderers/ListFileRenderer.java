@@ -29,6 +29,7 @@ import org.thymeleaf.context.Context;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Map;
 
 public class ListFileRenderer implements Renderer {
     private final TemplateEngine templateEngine;
@@ -52,7 +53,13 @@ public class ListFileRenderer implements Renderer {
         context.setVariable("helpArticles", fileCollector.getHelpArticles());
         context.setVariable("sysArticles", fileCollector.getSysArticles());
 
-        try (Writer writer = new OutputStreamWriter(new FileOutputStream(target), StandardCharsets.UTF_8)) {
+        // Make it a plugin later.
+        Map<String, String> otherConfigMap = Config.getInstance().getOtherConfigMap();
+        if (!otherConfigMap.isEmpty()) {
+            context.setVariable("googleAdSenseClient", otherConfigMap.get("googleAdSenseClient"));
+            context.setVariable("googleAdSenseSlot", otherConfigMap.get("googleAdSenseSlot"));
+        }
+
         try (Writer writer = new OutputStreamWriter(Files.newOutputStream(target.toPath()), StandardCharsets.UTF_8)) {
             writer.write(templateEngine.process("index", context));
         } catch (IOException e) {

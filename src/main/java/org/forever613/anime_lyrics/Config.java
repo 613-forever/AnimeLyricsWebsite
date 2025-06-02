@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Map;
 
 public class Config {
     private static final Logger LOGGER = LoggerFactory.getLogger(Config.class);
@@ -31,6 +32,7 @@ public class Config {
     private String nameTitle;
     private String nameFooter;
     private String rootUrl;
+    private Map<String, String> configs;
 
     private static Config instance;
 
@@ -40,6 +42,7 @@ public class Config {
         }
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8))) {
             instance = new Config();
+            instance.configs = new java.util.HashMap<>();
             String buffer = reader.readLine();
             while (buffer != null) {
                 if (buffer.contains("=")) {
@@ -54,6 +57,8 @@ public class Config {
                     case "url":
                         instance.rootUrl = kv[1].endsWith("/") ? kv[1] : kv[1] + "/";
                         break;
+                    default:
+                        instance.configs.put(kv[0], kv[1]);
                     }
                 }
                 buffer = reader.readLine();
@@ -81,5 +86,9 @@ public class Config {
 
     public String getRootUrl() {
         return rootUrl;
+    }
+
+    public Map<String, String> getOtherConfigMap() {
+        return configs;
     }
 }

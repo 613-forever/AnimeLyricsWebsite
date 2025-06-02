@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="head(nameTitle, title, links, scripts)">
+<head th:fragment="head(nameTitle, title, links, scripts, googleAdSenseClient)">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=0.4, user-scalable=1" />
   <link rel="icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{./static/favicon.ico}"/>
@@ -15,6 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../static/Han.css" th:href="@{./static/Han.css}"/>
   <link rel="stylesheet" type="text/css" href="../static/anime-lyrics.css" th:href="@{./static/anime-lyrics.css}"/>
   <th:block th:each="style:${styles}" th:utext="${style}"/>
+  <th:block th:replace="~{google-adsense :: google-ads-meta(${googleAdSenseClient})}"/>
 </head>
 <body>
 <div class="container">

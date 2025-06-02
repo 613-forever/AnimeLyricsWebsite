@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh">
-<head th:replace="~{fragments :: head(${nameTitle}, 主页,~{::link},~{::scripts})}">
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head(${nameTitle}, 主页, ~{::link}, ~{::scripts}, ${googleAdSenseClient})}">
   <meta charset="UTF-8">
   <title>主页 - 的歌词收藏册</title>
 </head>
 <body>
 <div class="container">
   <header th:replace="~{fragments :: header(${nameTitle})}"></header>
+  <div th:replace="~{google-adsense :: google-ads-header(${googleAdSenseClient}, ${googleAdSenseSlot})}"></div>
   <article id="write">
     <h2>内容页面列表</h2>
     <table>
@@ -41,6 +41,7 @@
       </li>
     </ul>
   </article>
+  <div th:replace="~{google-adsense :: google-ads-footer(${googleAdSenseClient}, ${googleAdSenseSlot})}"></div>
   <footer th:replace="~{fragments :: footer(${nameFooter})}"></footer>
 </div>
 </body>

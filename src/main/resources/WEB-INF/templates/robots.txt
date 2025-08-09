@@ -3,4 +3,5 @@ Disallow: /static/*
 Allow: /
 Allow: /static/*.js
 Allow: /static/*.css
+Allow: /static/favicon.ico
 Sitemap: [(${url})][(${sitemap})]

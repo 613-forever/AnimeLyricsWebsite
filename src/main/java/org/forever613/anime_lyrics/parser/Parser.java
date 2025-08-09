@@ -45,7 +45,8 @@ import java.util.*;
 
 public class Parser extends AnimeLyricsPBaseVisitor<Element> {
     static final private Logger LOGGER = LoggerFactory.getLogger(Parser.class);
-    String name, creationTime, author;
+    String name, creationTime, author, description;
+    List<String> keywords;
     TemplateParser templateParser;
     int lyricsStartLine = -1;
     static final String DEFAULT_LANG = "zh", JAPANESE_LANG = "ja", JAPANESE_ROMAJI = "ja-Latn";
@@ -67,6 +68,8 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
             GeneratedFileInfo info = new GeneratedFileInfo();
             info.setTitle(name);
             if (author != null) info.setAuthor(author);
+            if (keywords != null) info.setKeywords(keywords);
+            if (description != null) info.setDescription(description);
             info.setPubdate(DateUtils.fromFormatted(creationTime));
             return info;
         } catch (IOException e) {
@@ -437,6 +440,13 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
                 link.addAttribute("href", "#footnote-" + id);
                 link.addText("[" + id + "]");
                 nodes.add(sup);
+            } else if (node.keywords() != null) {
+                if (keywords == null) {
+                    keywords = new ArrayList<>();
+                }
+                keywords.addAll(Arrays.asList(makeWords(node.keywords().words()).split(",")));
+            } else if (node.description() != null) {
+                description = makeWords(node.description().words());
             }
         }
         return nodes;

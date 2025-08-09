@@ -35,7 +35,7 @@ header: mark+=HASH+ SPACE+ words;
 list: mark+=ASTER+ SPACE+ (footnote_def SPACE+)? markup_text;
 parse_only: PARSE_ONLY_SIGN SPACE+ markup_text;
 markup_text: (nodes+=markup_element SPACE*)+;
-markup_element: (words | author_text | time_text | link | color_text | covered_text | lang_text | br | ateji | ruby | footnote_ref /*| inline_lyrics*/);
+markup_element: (words | author_text | time_text | link | color_text | covered_text | lang_text | br | ateji | ruby | footnote_ref | keywords | description /*| inline_lyrics*/);
 hr: HORIZONTAL_RULE;
 
 template: AT_BRACE_L templ=word BRACE_R (PAREN_L params+=CONTENT PAREN_R)*;
@@ -46,11 +46,15 @@ time_text: start_time markup_text end_tag;
 lang_text: start_lang markup_text end_tag;
 color_text: start_color markup_text end_tag;
 covered_text: start_cover markup_text end_tag;
+keywords: start_keyword words end_tag;
+description: start_description words end_tag;
 start_lang: ANGLE_L LANG (lang=VALUE)? ANGLE_R;
 start_color: ANGLE_L COLOR color=VALUE ANGLE_R;
 start_cover: ANGLE_L COVERED ANGLE_R;
 start_author: ANGLE_L AUTHOR ANGLE_R;
 start_time: ANGLE_L TIME (time=VALUE)? ANGLE_R;
+start_keyword: ANGLE_L KEYWORD ANGLE_R;
+start_description: ANGLE_L DESCRIPTION ANGLE_R;
 end_tag: ANGLE_L SLASH_AND_THEN_ANY ANGLE_R;
 
 footnote_ref: BRACKET_L HAT ft_id=word BRACKET_R;

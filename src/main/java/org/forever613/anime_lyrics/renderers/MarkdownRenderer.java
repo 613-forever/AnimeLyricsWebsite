@@ -75,6 +75,8 @@ public class MarkdownRenderer implements Renderer {
 
             context.setVariable("title", info.getTitle());
             context.setVariable("author", info.getAuthor());
+            if (info.getKeywords() != null) context.setVariable("keywords", String.join(", ", info.getKeywords()));
+            if (info.getDescription() != null) context.setVariable("description", info.getDescription());
             context.setVariable("createdTime", DateUtils.format(info.getPubdate()));
             context.setVariable("modifiedTime", DateUtils.format(draft.lastModified()));
             context.setVariable("content", info.getOtherContent());

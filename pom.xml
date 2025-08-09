@@ -6,7 +6,7 @@
 
     <groupId>org.forever613</groupId>
     <artifactId>AnimeLyrics</artifactId>
-    <version>1.1.2</version>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -74,6 +74,8 @@
                         <argument>-package</argument>
                         <argument>org.forever613.anime_lyrics.parser.grammar</argument>
                         <argument>-Dlanguage=Java</argument>
+                        <argument>-lib</argument>
+                        <argument>${project.basedir}/src/main/antlr4/org/forever613/anime_lyrics/parser/grammar</argument>
                     </arguments>
                     <listener>false</listener>
                     <visitor>true</visitor>

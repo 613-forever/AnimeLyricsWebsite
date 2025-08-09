@@ -112,7 +112,7 @@ public class TemplateParser {
         case "bilibili-video-card": {
             return process("templates", "bilibili-video-card", wrapBiliLinkParamsWithPage(params), true, true);
         }
-        // with no dependent css and js
+        // with no dependent css or js
         default: {
             return process("templates", name, wrapParams(params), false, false);
         }

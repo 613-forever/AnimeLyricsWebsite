@@ -3,6 +3,10 @@
 <head th:fragment="head(nameTitle, title, links, scripts, googleAdSenseClient)">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=0.4, user-scalable=1" />
+  <meta th:if="${keywords}" name="keywords" th:content="${keywords}" />
+  <meta th:if="${description}" name="description" th:content="${description}" />
+  <meta name="author" th:content="${nameTitle}" />
+  <meta name="generator" content="613-forever/AnimeLyricsWebsite v1.2.0" />
   <link rel="icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{./static/favicon.ico}"/>
   <link rel="shortcut icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{./static/favicon.ico}"/>
   <title th:utext="${title} + ' - ' + ${nameTitle} + '的歌词收藏册'">主页 - 的歌词收藏册</title>

@@ -19,11 +19,14 @@
 package org.forever613.anime_lyrics;
 
 import java.util.Date;
+import java.util.List;
 
 public class GeneratedFileInfo {
     private String author;
     private String title;
     private Date pubdate;
+    private List<String> keywords;
+    private String description;
     private String otherContent;
 
     public GeneratedFileInfo() {
@@ -57,6 +60,22 @@ public class GeneratedFileInfo {
         this.pubdate = pubdate;
     }
 
+    public List<String> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(List<String> keywords) {
+        this.keywords = keywords;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getOtherContent() {
         return otherContent;
     }
@@ -71,6 +90,8 @@ public class GeneratedFileInfo {
         sb.append("author='").append(author).append('\'');
         sb.append(", title='").append(title).append('\'');
         sb.append(", pubdate=").append(pubdate);
+        sb.append(", keywords='").append(String.join(",", keywords)).append('\'');
+        sb.append(", description='").append(description).append('\'');
         sb.append(", otherContent='").append(otherContent).append('\'');
         sb.append('}');
         return sb.toString();

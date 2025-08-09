@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class HtmlUtils {
     private static Logger logger = LoggerFactory.getLogger("HtmlUtils");
@@ -85,6 +86,28 @@ public class HtmlUtils {
                 int pubdate_end = content.indexOf("</time>", pubdate_start);
                 info.setPubdate(DateUtils.fromFormatted(content.substring(pubdate_before_content + 1, pubdate_end)));
                 content = content.substring(0, pubdate_start).trim() + content.substring(pubdate_end + 7).trim();
+            }
+        }
+        {
+            int keyword_start = content.indexOf("<span id=\"keywords\"");
+            if (keyword_start == -1) {
+                logger.warn("I failed to find <span id=\"keywords\">... ");
+            } else {
+                int keyword_before_content = content.indexOf('>', keyword_start);
+                int keyword_end = content.indexOf("</span>", keyword_start);
+                info.setKeywords(Arrays.asList(content.substring(keyword_before_content + 1, keyword_end).split(", ")));
+                content = content.substring(0, keyword_start).trim() + content.substring(keyword_end + 7).trim();
+            }
+        }
+        {
+            int description_start = content.indexOf("<span id=\"description\"");
+            if (description_start == -1) {
+                logger.warn("I failed to find <span id=\"description\">... ");
+            } else {
+                int description_before_content = content.indexOf('>', description_start);
+                int description_end = content.indexOf("</span>", description_start);
+                info.setDescription(content.substring(description_before_content + 1, description_end));
+                content = content.substring(0, description_start).trim() + content.substring(description_end + 7).trim();
             }
         }
         info.setOtherContent(content);

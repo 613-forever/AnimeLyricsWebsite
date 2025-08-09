@@ -25,7 +25,7 @@ public class Main {
 
     static final String COPY_ONLY_DIR_NAME = "copy_only";
     static final String LIST_FILE_NAME = "List.html";
-    static final String SITEMAP_FILE_NAME = "Sitemap.xml";
+    static final String SITEMAP_FILE_NAME = "sitemap.xml";
     static final String ROBOTS_FILE_NAME = "robots.txt";
     static final String CONFIG_FILE_NAME = "config.txt";
 

@@ -29,6 +29,7 @@ import org.thymeleaf.context.Context;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.Map;
 
 public class ListFileRenderer implements Renderer {
@@ -53,6 +54,16 @@ public class ListFileRenderer implements Renderer {
         context.setVariable("helpArticles", fileCollector.getHelpArticles());
         context.setVariable("sysArticles", fileCollector.getSysArticles());
 
+        GeneratedFileInfo info = new GeneratedFileInfo();
+        info.setTitle("index");
+        info.setKeywords(Arrays.asList("动画歌词", "动漫歌词", "歌曲列表"));
+        info.setDescription(String.format("本页面是%s的歌词收藏册的主页及列表页。", info.getAuthor()));
+
+        context.setVariable("author", info.getAuthor());
+        context.setVariable("title", info.getTitle());
+        context.setVariable("keywords", String.join(", ", info.getKeywords()));
+        context.setVariable("description", info.getDescription());
+
         // Make it a plugin later.
         Map<String, String> otherConfigMap = Config.getInstance().getOtherConfigMap();
         if (!otherConfigMap.isEmpty()) {
@@ -69,8 +80,7 @@ public class ListFileRenderer implements Renderer {
         }
 
         logger.info("I have generated the index page successfully.");
-        GeneratedFileInfo info = new GeneratedFileInfo();
-        info.setTitle("index");
+
         return info;
     }
 }

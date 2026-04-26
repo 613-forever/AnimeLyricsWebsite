@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Calendar;
+import java.nio.file.Files;
 import java.util.Date;
 
 public class SitemapRenderer implements Renderer {
@@ -78,7 +78,7 @@ public class SitemapRenderer implements Renderer {
             addUrl(root, info,  "yearly", 0.0);
         }
 
-        try (Writer writer = new OutputStreamWriter(new FileOutputStream(target), StandardCharsets.UTF_8)) {
+        try (Writer writer = Files.newBufferedWriter(target.toPath(), StandardCharsets.UTF_8)) {
             XMLWriter xmlWriter = new XMLWriter();
             xmlWriter.setWriter(writer);
             xmlWriter.write(doc);

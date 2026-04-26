@@ -40,7 +40,7 @@ public class Config {
         if (instance != null) {
             throw new IllegalStateException();
         }
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8))) {
+        try (BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
             instance = new Config();
             instance.configs = new java.util.HashMap<>();
             String buffer = reader.readLine();

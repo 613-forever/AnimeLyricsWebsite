@@ -39,8 +39,9 @@ import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.*;
 
 public class Parser extends AnimeLyricsPBaseVisitor<Element> {
@@ -56,9 +57,9 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
         templateParser = new TemplateParser(templateEngine, this);
     }
 
-    public GeneratedFileInfo parse(Reader reader, Writer writer) {
+    public GeneratedFileInfo parse(Path source, Writer writer) {
         try {
-            AnimeLyricsL lexer = new AnimeLyricsL(CharStreams.fromReader(reader));
+            AnimeLyricsL lexer = new AnimeLyricsL(CharStreams.fromPath(source, StandardCharsets.UTF_8));
             AnimeLyricsP parser = new AnimeLyricsP(new BufferedTokenStream(lexer));
             OutputFormat format = OutputFormat.createCompactFormat();
             HTMLWriter htmlWriter = new HTMLWriter(format);

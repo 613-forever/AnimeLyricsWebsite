@@ -1,6 +1,6 @@
 /*
  * This file is part of AnimeLyricsWebsite.
- * Copyright (C) 2021 613_forever
+ * Copyright (C) 2021-2026 613_forever
  *
  * AnimeLyricsWebsite is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -43,21 +43,20 @@ public class AnimeLyricsRenderer implements Renderer {
 
     @Override
     public GeneratedFileInfo render(File draft, File target) {
-        GeneratedFileInfo info;
-        try (Reader reader = new InputStreamReader(Files.newInputStream(draft.toPath()), StandardCharsets.UTF_8)) {
-            StringWriter stringWriter = new StringWriter();
-            logger.debug("I am planning to generate \"{}\" from \"{}\"", target.getName(), draft.getName());
+        StringWriter stringWriter = new StringWriter();
+        logger.debug("I am planning to generate \"{}\" from \"{}\"", target.getName(), draft.getName());
 
-            Parser parser = new Parser(templateEngine);
-            try {
-                info = parser.parse(reader, stringWriter);
-            } catch (ParsingException e) {
-                logger.warn("I have just failed to generate file \"{}\" from \"{}\" due to syntax errors.",
-                        target.getName(), draft.getName());
-                logger.debug("");
-                return null;
-            }
-            String cachedString = stringWriter.getBuffer().toString();
+        Parser parser = new Parser(templateEngine);
+        GeneratedFileInfo info;
+        try {
+            info = parser.parse(draft.toPath(), stringWriter);
+        } catch (ParsingException e) {
+            logger.warn("I have just failed to generate file \"{}\" from \"{}\" due to loading or syntactic errors.",
+                    target.getName(), draft.getName());
+            logger.debug("");
+            return null;
+        }
+        String cachedString = stringWriter.getBuffer().toString();
 
             Context context = new Context();
             context.setVariable("nameTitle", Config.getInstance().getNameTitle());
@@ -73,26 +72,22 @@ public class AnimeLyricsRenderer implements Renderer {
             context.setVariable("styles", parser.getTemplateParser().getRequiredCSS());
             context.setVariable("scripts", parser.getTemplateParser().getRequiredJS());
 
-            // Make it a plugin later.
-            Map<String, String> otherConfigMap = Config.getInstance().getOtherConfigMap();
-            if (!otherConfigMap.isEmpty()) {
-                context.setVariable("googleAdSenseClient", otherConfigMap.get("googleAdSenseClient"));
-                context.setVariable("googleAdSenseSlot", otherConfigMap.get("googleAdSenseSlot"));
-            }
+        // Make it a plugin later.
+        Map<String, String> otherConfigMap = Config.getInstance().getOtherConfigMap();
+        if (!otherConfigMap.isEmpty()) {
+            context.setVariable("googleAdSenseClient", otherConfigMap.get("googleAdSenseClient"));
+            context.setVariable("googleAdSenseSlot", otherConfigMap.get("googleAdSenseSlot"));
+        }
 
-            String html = templateEngine.process("embed", context);
-            try (Writer writer = new OutputStreamWriter(Files.newOutputStream(target.toPath()), StandardCharsets.UTF_8)) {
-                writer.write(html);
-            } catch (IOException e) {
-                logger.warn("I have just failed to generate file \"{}\" when writing : {}", target.getName(), e.getMessage());
-                logger.debug("ST: ", e);
-                return null;
-            }
+        String html = templateEngine.process("embed", context);
+        try (Writer writer = new OutputStreamWriter(Files.newOutputStream(target.toPath()), StandardCharsets.UTF_8)) {
+            writer.write(html);
         } catch (IOException e) {
-            logger.warn("I have just failed to generate file \"{}\" when reading and parsing : {}", target.getName(), e.getMessage());
+            logger.warn("I have just failed to generate file \"{}\" when writing : {}", target.getName(), e.getMessage());
             logger.debug("ST: ", e);
             return null;
         }
+
         logger.info("I have generated the file \"{}\" successfully.", target.getName());
         return info;
     }

@@ -62,11 +62,8 @@ public class MarkdownRenderer implements Renderer {
             logger.debug("ST: ", e);
             return null;
         }
-        try (Reader reader = new InputStreamReader(Files.newInputStream(tempFile.toPath()), StandardCharsets.UTF_8)) {
-            char[] buffer = new char[(int) tempFile.length()];
-            //noinspection ResultOfMethodCallIgnored
-            reader.read(buffer);
-            String content = String.valueOf(buffer);
+        try {
+            String content = new String(Files.readAllBytes(tempFile.toPath()), StandardCharsets.UTF_8);
             info = HtmlUtils.splitInfo(content);
 
             Context context = new Context();

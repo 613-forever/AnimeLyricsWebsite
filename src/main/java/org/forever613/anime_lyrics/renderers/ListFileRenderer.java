@@ -74,7 +74,7 @@ public class ListFileRenderer implements Renderer {
         try (Writer writer = new OutputStreamWriter(Files.newOutputStream(target.toPath()), StandardCharsets.UTF_8)) {
             writer.write(templateEngine.process("index", context));
         } catch (IOException e) {
-            logger.warn("I have just failed to generate the index page. " + e.getMessage());
+            logger.warn("I have just failed to generate the index page. {}", e.getMessage());
             logger.debug("ST: ", e);
             return null;
         }

@@ -23,8 +23,8 @@
       <tr th:each="entry,stat : ${articles}" th:class="${stat.odd} ? 'odd' : 'even'">
         <td><a class="internal-link" target="_blank" th:href="@{'./' + ${entry.filename}}"
                th:utext="${entry.title}"></a></td>
-        <td th:text="${#dates.format(entry.createdDate, 'yyyy-MM-dd HH:mm')}"/>
-        <td th:text="${#dates.format(entry.modifiedDate, 'yyyy-MM-dd HH:mm')}"/>
+        <td th:text="${#temporals.format(entry.createdDate, 'yyyy-MM-dd HH:mm')}"/>
+        <td th:text="${#temporals.format(entry.modifiedDate, 'yyyy-MM-dd HH:mm')}"/>
       </tr>
       </tbody>
     </table>

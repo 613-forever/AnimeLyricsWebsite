@@ -1,6 +1,6 @@
 /*
  * This file is part of AnimeLyricsWebsite.
- * Copyright (C) 2021 613_forever
+ * Copyright (C) 2021-2026 613_forever
  *
  * AnimeLyricsWebsite is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -18,13 +18,13 @@
 
 package org.forever613.anime_lyrics;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public class GeneratedFileInfo {
     private String author;
     private String title;
-    private Date pubdate;
+    private ZonedDateTime pubdate;
     private List<String> keywords;
     private String description;
     private String otherContent;
@@ -32,7 +32,7 @@ public class GeneratedFileInfo {
     public GeneratedFileInfo() {
         this.author = Config.getInstance().getNameFooter();
         this.title = "untitled";
-        this.pubdate = new Date();
+        this.pubdate = ZonedDateTime.now();
         this.otherContent = "";
     }
 
@@ -52,11 +52,11 @@ public class GeneratedFileInfo {
         this.title = title;
     }
 
-    public Date getPubdate() {
+    public ZonedDateTime getPubdate() {
         return pubdate;
     }
 
-    public void setPubdate(Date pubdate) {
+    public void setPubdate(ZonedDateTime pubdate) {
         this.pubdate = pubdate;
     }
 

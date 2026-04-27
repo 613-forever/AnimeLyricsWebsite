@@ -18,15 +18,15 @@
 
 package org.forever613.anime_lyrics;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 public class SourceFileInfo implements Comparable<SourceFileInfo> {
     private final String filename;
     private final String title;
-    private final Date createdDate;
-    private final Date modifiedDate;
+    private final ZonedDateTime createdDate;
+    private final ZonedDateTime modifiedDate;
 
-    public SourceFileInfo(String filename, String title, Date createdDate, Date modifiedDate) {
+    public SourceFileInfo(String filename, String title, ZonedDateTime createdDate, ZonedDateTime modifiedDate) {
         this.filename = filename;
         this.title = title;
         this.createdDate = createdDate;
@@ -41,11 +41,11 @@ public class SourceFileInfo implements Comparable<SourceFileInfo> {
         return title;
     }
 
-    public Date getCreatedDate() {
+    public ZonedDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public Date getModifiedDate() {
+    public ZonedDateTime getModifiedDate() {
         return modifiedDate;
     }
 

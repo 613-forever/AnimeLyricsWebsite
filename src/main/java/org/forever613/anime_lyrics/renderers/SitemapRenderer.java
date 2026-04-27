@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 public class SitemapRenderer implements Renderer {
     private final FileCollector fileCollector;
@@ -46,10 +46,10 @@ public class SitemapRenderer implements Renderer {
         this.rootUrl = rootUrl;
     }
 
-    public void addUrl(Element root, String url, Date lastMod, String changeFreq, double priority) {
+    public void addUrl(Element root, String url, ZonedDateTime lastMod, String changeFreq, double priority) {
         Element urlElement = root.addElement("url", xmlns);
         urlElement.addElement("loc", xmlns).addText(rootUrl + url);
-        urlElement.addElement("lastmod", xmlns).addText(DateUtils.formatDate(lastMod));
+        urlElement.addElement("lastmod", xmlns).addText(DateUtils.formatISO8601(lastMod));
         urlElement.addElement("changefreq", xmlns).addText(changeFreq);
         urlElement.addElement("priority", xmlns).addText(String.valueOf(priority));
     }
@@ -64,14 +64,15 @@ public class SitemapRenderer implements Renderer {
 
         Document doc = DocumentHelper.createDocument();
         Element root = doc.addElement("urlset", xmlns);
+        ZonedDateTime now = ZonedDateTime.now();
 
-        addUrl(root, "", new Date(), "daily", 0.2);
+        addUrl(root, "", now, "daily", 0.2);
         for (SourceFileInfo info: fileCollector.getArticles()) {
-            int past = DateUtils.difference(info.getModifiedDate(), new Date());
+            int past = DateUtils.difference(info.getModifiedDate(), now);
             addUrl(root, info, past < 10 ? "weekly" : past < 50 ? "monthly" : "yearly",  0.8);
         }
         for (SourceFileInfo info: fileCollector.getHelpArticles()) {
-            int past = DateUtils.difference(info.getModifiedDate(), new Date());
+            int past = DateUtils.difference(info.getModifiedDate(), now);
             addUrl(root, info, past < 30 ? "monthly" : "yearly", 0.4);
         }
         for (SourceFileInfo info: fileCollector.getSysArticles()) {

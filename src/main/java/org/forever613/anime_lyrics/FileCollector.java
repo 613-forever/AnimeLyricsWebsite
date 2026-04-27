@@ -19,6 +19,7 @@
 package org.forever613.anime_lyrics;
 
 import org.forever613.anime_lyrics.renderers.*;
+import org.forever613.anime_lyrics.utils.DateUtils;
 import org.forever613.anime_lyrics.utils.HtmlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class FileCollector {
@@ -137,7 +137,6 @@ public class FileCollector {
             String newFileName = fileName.substring(0, fileName.indexOf('.')) + ".html";
             File target = new File(targetDir, newFileName);
             GeneratedFileInfo info;
-            Date modifiedDate = new Date(draft.lastModified());
             if (!target.exists() || target.lastModified() < draft.lastModified()) {
                 info = renderer.render(draft, target);
                 updated = true;
@@ -148,7 +147,7 @@ public class FileCollector {
                 LOGGER.warn("I think something must be wrong with \"{}\" to generate {}.", fileName, info);
                 continue; // failure
             }
-            SourceFileInfo sInfo = new SourceFileInfo(newFileName, info.getTitle(), info.getPubdate(), modifiedDate);
+            SourceFileInfo sInfo = new SourceFileInfo(newFileName, info.getTitle(), info.getPubdate(), DateUtils.fromMilli(draft.lastModified()));
             addFile(sInfo);
         }
     }

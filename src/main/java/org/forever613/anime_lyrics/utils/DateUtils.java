@@ -22,8 +22,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 public class DateUtils {
@@ -31,39 +34,61 @@ public class DateUtils {
     private static final DateFormat date_format = new SimpleDateFormat("yyyy-MM-dd");
     private static final DateFormat full_format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-    private static final DateFormat input1_format = new SimpleDateFormat("yyyy-M-d H:mm");
-    private static final DateFormat input2_format = new SimpleDateFormat("yyyy.M.d H:mm");
-    private static final DateFormat input3_format = new SimpleDateFormat("yyyy/M/d H:mm");
+    private static final DateTimeFormatter input1_format = DateTimeFormatter.ofPattern("yyyy-M-d H:mm");
+    private static final DateTimeFormatter input2_format = DateTimeFormatter.ofPattern("yyyy.M.d H:mm");
+    private static final DateTimeFormatter input3_format = DateTimeFormatter.ofPattern("yyyy/M/d H:mm");
 
-    public static String format(long milliseconds) {
-        return format(new Date(milliseconds));
+    public static ZonedDateTime fromMilli(long milliseconds) {
+        return ZonedDateTime.ofInstant(Instant.ofEpochMilli(milliseconds), ZoneId.systemDefault());
     }
 
+    public static String format(long milliseconds) {
+        return format(fromMilli(milliseconds));
+    }
+
+    @Deprecated
     public static String format(Date date) {
         if (date == null) return null;
         return full_format.format(date);
     }
 
-    public static String formatDate(long milliseconds) {
-        return formatDate(new Date(milliseconds));
+    public static String format(ZonedDateTime date) {
+        return DateTimeFormatter.ISO_LOCAL_DATE.format(date);
     }
 
+    public static String formatISO8601(long milliseconds) {
+        return formatISO8601(fromMilli(milliseconds));
+    }
+
+    public static String formatISO8601(ZonedDateTime date) {
+        return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(date);
+    }
+
+    public static String formatDate(long milliseconds) {
+        return formatDate(fromMilli(milliseconds));
+    }
+
+    @Deprecated
     public static String formatDate(Date date) {
         if (date == null) return null;
         return date_format.format(date);
     }
 
-    public static Date fromFormatted(String str) {
+    public static String formatDate(ZonedDateTime date) {
+        return DateTimeFormatter.ISO_LOCAL_DATE.format(date);
+    }
+
+    public static ZonedDateTime fromFormatted(String str) {
         if (str == null) return null;
         try {
-            return input1_format.parse(str);
-        } catch (ParseException e1) {
+            return LocalDateTime.parse(str, input1_format).atZone(ZoneId.systemDefault());
+        } catch (DateTimeParseException e1) {
             try {
-                return input2_format.parse(str);
-            } catch (ParseException e2) {
+                return LocalDateTime.parse(str, input2_format).atZone(ZoneId.systemDefault());
+            } catch (DateTimeParseException e2) {
                 try {
-                    return input3_format.parse(str);
-                } catch (ParseException e3) {
+                    return LocalDateTime.parse(str, input3_format).atZone(ZoneId.systemDefault());
+                } catch (DateTimeParseException e3) {
                     logger.warn("I met a time object in invalid format: \"{}\"", str);
                     return null;
                 }
@@ -71,6 +96,7 @@ public class DateUtils {
         }
     }
 
+    @Deprecated
     public static String format(String str) {
         if (str == null) return null;
         return format(fromFormatted(str));
@@ -78,5 +104,9 @@ public class DateUtils {
 
     public static int difference(Date lhs, Date rhs) {
         return (int) ((lhs.getTime() - rhs.getTime()) / 86400000);
+    }
+
+    public static int difference(ZonedDateTime lhs, ZonedDateTime rhs) {
+        return (int) (lhs.until(rhs, ChronoUnit.DAYS));
     }
 }

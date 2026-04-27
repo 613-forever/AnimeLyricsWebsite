@@ -102,6 +102,7 @@ public class DateUtils {
         return format(fromFormatted(str));
     }
 
+    @Deprecated
     public static int difference(Date lhs, Date rhs) {
         return (int) ((lhs.getTime() - rhs.getTime()) / 86400000);
     }

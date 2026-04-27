@@ -707,7 +707,7 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
 
             elements.realText.addText(literal);
             elements.bracketText.addText(literal);
-            if (foreignWord.length() > 0) {
+            if (!foreignWord.isEmpty()) {
                 if (context.foreign_ruby().PLUS() == null) {
                     elements.romajiText.addAttribute("class", "gairaigo " + capitalClass).addText(foreignWord);
                 } else {
@@ -750,7 +750,7 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
             }
             String romaji = KanaUtils.romaji(kanaText);
 
-            if (romaji.length() > 0) {
+            if (!romaji.isEmpty()) {
                 elements.romajiText.addText(makeWord(romaji)).addAttribute("class", capitalClass);
                 elements.padBoth();
             }

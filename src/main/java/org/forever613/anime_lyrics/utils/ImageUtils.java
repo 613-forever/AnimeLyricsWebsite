@@ -27,9 +27,15 @@ import java.nio.file.Files;
 public class ImageUtils {
     public static ImageInfo loadImageInfo(File draftDir, String image) {
         ImageInfo info = new ImageInfo();
-        info.setAbsolutePath(Config.getInstance().getRootUrl() + (image.charAt(0) == '/' ? image.substring(1) : image));
+        String relativeToRootPath = image.charAt(0) == '/' ? image.substring(1) : image;
+        info.setAbsolutePath(Config.getInstance().getRootUrl() + relativeToRootPath);
 
-        try (InputStream is = Files.newInputStream(draftDir.toPath().resolve("copy_only").resolve(image))) {
+        if (!image.substring(image.length() - 4).equals(".webp")) {
+            return info;
+        }
+
+        info.setMimeType("image/webp");
+        try (InputStream is = Files.newInputStream(draftDir.toPath().resolve("copy_only").resolve(relativeToRootPath))) {
             extractDimension(info, is);
         } catch (IOException e) {
             throw new RuntimeException(e);

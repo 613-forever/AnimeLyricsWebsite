@@ -22,6 +22,7 @@ public class ImageInfo {
     private int width;
     private int height;
     private String absolutePath;
+    private String mimeType;
 
     public int getWidth() {
         return width;
@@ -47,12 +48,21 @@ public class ImageInfo {
         this.absolutePath = absolutePath;
     }
 
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("ImageInfo{");
         sb.append("width=").append(width);
         sb.append(", height=").append(height);
         sb.append(", absolutePath='").append(absolutePath).append('\'');
+        sb.append(", mimeType='").append(mimeType).append('\'');
         sb.append('}');
         return sb.toString();
     }

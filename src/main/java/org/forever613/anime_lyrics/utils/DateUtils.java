@@ -39,7 +39,8 @@ public class DateUtils {
     private static final DateTimeFormatter input3_format = DateTimeFormatter.ofPattern("yyyy/M/d H:mm");
 
     public static ZonedDateTime fromMilli(long milliseconds) {
-        return ZonedDateTime.ofInstant(Instant.ofEpochMilli(milliseconds), ZoneId.systemDefault());
+        // 用不到毫秒部分，这里都扔掉
+        return ZonedDateTime.ofInstant(Instant.ofEpochSecond(milliseconds / 1000), ZoneId.systemDefault());
     }
 
     public static String format(long milliseconds) {

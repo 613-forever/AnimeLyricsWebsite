@@ -16,11 +16,11 @@
   <meta property="og:url" th:content="${url}" />
   <meta property="og:site_name" th:content="${nameTitle} + '的歌词收藏册'" />
   <meta property="og:locale" content="zh_CN" />
-  <th:block th:if="${imageFile != null}">
+  <th:block th:if="${image != null}">
   <meta property="og:image" th:content="${image.absolutePath}" />
   <meta property="og:image:width" th:content="${image.width}" />
   <meta property="og:image:height" th:content="${image.height}" />
-  <meta property="og:image:type" content="image/webp" th:content="${image.mimeType}" />
+  <meta property="og:image:type" content="image/webp" th:if="${image.mimeType != null}" th:content="${image.mimeType}" />
   <meta property="og:image:alt" th:content="${title}" />
   </th:block>
   <meta property="article:published_time" th:content="${createdTimeISO8601}" />
@@ -29,10 +29,9 @@
   <meta property="article:tag" th:each="keyword:${keywordsList}" th:content="${keyword}" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" th:content="@${nameTitle}" />
   <meta name="twitter:title" th:content="${title} + ' - ' + ${nameTitle} + '的歌词收藏册'" />
   <meta name="twitter:description" th:content="${description}" />
-  <meta name="twitter:image" th:if="${imageFile != null}" th:content="${image.absolutePath}" />
+  <meta name="twitter:image" th:if="${image != null}" th:content="${image.absolutePath}" />
   <meta name="twitter:url" th:content="${url}" />
 
   <title th:utext="${title} + ' - ' + ${nameTitle} + '的歌词收藏册'">主页 - 的歌词收藏册</title>

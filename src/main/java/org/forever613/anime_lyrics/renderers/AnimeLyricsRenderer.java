@@ -20,9 +20,11 @@ package org.forever613.anime_lyrics.renderers;
 
 import org.forever613.anime_lyrics.Config;
 import org.forever613.anime_lyrics.GeneratedFileInfo;
+import org.forever613.anime_lyrics.ImageInfo;
 import org.forever613.anime_lyrics.parser.Parser;
 import org.forever613.anime_lyrics.parser.ParsingException;
 import org.forever613.anime_lyrics.utils.DateUtils;
+import org.forever613.anime_lyrics.utils.ImageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
@@ -58,19 +60,29 @@ public class AnimeLyricsRenderer implements Renderer {
         }
         String cachedString = stringWriter.getBuffer().toString();
 
-            Context context = new Context();
-            context.setVariable("nameTitle", Config.getInstance().getNameTitle());
-            context.setVariable("nameFooter", Config.getInstance().getNameFooter());
+        ImageInfo image = null;
+        if (info.getImage() != null) {
+            image = ImageUtils.loadImageInfo(draft.getParentFile(), info.getImage());
+        }
 
-            context.setVariable("title", info.getTitle());
-            context.setVariable("author", info.getAuthor());
-            context.setVariable("keywords", String.join(", ", info.getKeywords()));
-            context.setVariable("description", info.getDescription());
-            context.setVariable("createdTime", DateUtils.format(info.getPubdate()));
-            context.setVariable("modifiedTime", DateUtils.format(draft.lastModified()));
-            context.setVariable("content", cachedString);
-            context.setVariable("styles", parser.getTemplateParser().getRequiredCSS());
-            context.setVariable("scripts", parser.getTemplateParser().getRequiredJS());
+        Context context = new Context();
+        context.setVariable("nameTitle", Config.getInstance().getNameTitle());
+        context.setVariable("nameFooter", Config.getInstance().getNameFooter());
+
+        context.setVariable("title", info.getTitle());
+        context.setVariable("author", info.getAuthor());
+        context.setVariable("keywords", String.join(", ", info.getKeywords()));
+        context.setVariable("keywordsList", info.getKeywords());
+        context.setVariable("description", info.getDescription());
+        context.setVariable("createdTime", DateUtils.format(info.getPubdate()));
+        context.setVariable("modifiedTime", DateUtils.format(draft.lastModified()));
+        context.setVariable("createdTimeISO8601", DateUtils.formatISO8601(info.getPubdate()));
+        context.setVariable("modifiedTimeISO8601", DateUtils.formatISO8601(draft.lastModified()));
+        context.setVariable("content", cachedString);
+        context.setVariable("styles", parser.getTemplateParser().getRequiredCSS());
+        context.setVariable("scripts", parser.getTemplateParser().getRequiredJS());
+        context.setVariable("url", Config.getInstance().getRootUrl() + target.getName());
+        context.setVariable("image", image);
 
         // Make it a plugin later.
         Map<String, String> otherConfigMap = Config.getInstance().getOtherConfigMap();

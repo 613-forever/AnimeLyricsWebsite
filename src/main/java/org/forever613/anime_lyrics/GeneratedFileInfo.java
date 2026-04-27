@@ -27,6 +27,7 @@ public class GeneratedFileInfo {
     private ZonedDateTime pubdate;
     private List<String> keywords;
     private String description;
+    private String image;
     private String otherContent;
 
     public GeneratedFileInfo() {
@@ -76,6 +77,14 @@ public class GeneratedFileInfo {
         this.description = description;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public String getOtherContent() {
         return otherContent;
     }
@@ -89,9 +98,10 @@ public class GeneratedFileInfo {
         final StringBuffer sb = new StringBuffer("GeneratedFileInfo{");
         sb.append("author='").append(author).append('\'');
         sb.append(", title='").append(title).append('\'');
-        sb.append(", pubdate=").append(pubdate);
+        sb.append(", pubdate='").append(pubdate).append('\'');
         sb.append(", keywords='").append(String.join(",", keywords)).append('\'');
         sb.append(", description='").append(description).append('\'');
+        sb.append(", image='").append(image).append('\'');
         sb.append(", otherContent='").append(otherContent).append('\'');
         sb.append('}');
         return sb.toString();

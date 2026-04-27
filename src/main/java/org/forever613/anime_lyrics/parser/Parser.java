@@ -46,7 +46,7 @@ import java.util.*;
 
 public class Parser extends AnimeLyricsPBaseVisitor<Element> {
     static final private Logger LOGGER = LoggerFactory.getLogger(Parser.class);
-    String name, creationTime, author, description;
+    String name, creationTime, author, description, image;
     List<String> keywords;
     TemplateParser templateParser;
     int lyricsStartLine = -1;
@@ -71,6 +71,7 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
             if (author != null) info.setAuthor(author);
             if (keywords != null) info.setKeywords(keywords);
             if (description != null) info.setDescription(description);
+            if (image != null) info.setImage(image);
             info.setPubdate(DateUtils.fromFormatted(creationTime));
             return info;
         } catch (IOException e) {
@@ -207,6 +208,7 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
             lyrics_root = DocumentHelper.createElement("div");
             lyrics_root.addAttribute("class", "lyrics_outer");
             if (background != null) {
+                image = background;
                 lyrics_root.addAttribute("style", "background-image: url(\"" + background + "\")");
             }
             lyrics = lyrics_root.addElement("section");

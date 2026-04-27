@@ -6,10 +6,37 @@
   <meta th:if="${keywords}" name="keywords" th:content="${keywords}" />
   <meta th:if="${description}" name="description" th:content="${description}" />
   <meta name="author" th:content="${nameTitle}" />
-  <meta name="generator" content="613-forever/AnimeLyricsWebsite v1.2.0" />
+  <meta name="generator" content="613-forever/AnimeLyricsWebsite v1.3.0" />
   <link rel="icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{./static/favicon.ico}"/>
   <link rel="shortcut icon" type="image/x-icon" href="../static/favicon.ico" th:href="@{./static/favicon.ico}"/>
+
+  <meta property="og:title" th:content="${title} + ' - ' + ${nameTitle} + '的歌词收藏册'" />
+  <meta property="og:description" th:content="${description}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" th:content="${url}" />
+  <meta property="og:site_name" th:content="${nameTitle} + '的歌词收藏册'" />
+  <meta property="og:locale" content="zh_CN" />
+  <th:block th:if="${imageFile != null}">
+  <meta property="og:image" th:content="${image.absolutePath}" />
+  <meta property="og:image:width" th:content="${image.width}" />
+  <meta property="og:image:height" th:content="${image.height}" />
+  <meta property="og:image:type" content="image/webp" th:content="${image.mimeType}" />
+  <meta property="og:image:alt" th:content="${title}" />
+  </th:block>
+  <meta property="article:published_time" th:content="${createdTimeISO8601}" />
+  <meta property="article:modified_time" th:content="${modifiedTimeISO8601}" />
+  <meta property="article:author" th:content="${nameTitle}" />
+  <meta property="article:tag" th:each="keyword:${keywordsList}" th:content="${keyword}" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" th:content="@${nameTitle}" />
+  <meta name="twitter:title" th:content="${title} + ' - ' + ${nameTitle} + '的歌词收藏册'" />
+  <meta name="twitter:description" th:content="${description}" />
+  <meta name="twitter:image" th:if="${imageFile != null}" th:content="${image.absolutePath}" />
+  <meta name="twitter:url" th:content="${url}" />
+
   <title th:utext="${title} + ' - ' + ${nameTitle} + '的歌词收藏册'">主页 - 的歌词收藏册</title>
+
   <link rel="stylesheet" type="text/css" href="../tmp/bootstrap.css"
         th:href="@{'https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css'}"/>
   <script type="application/javascript" src="../tmp/jquery.js"
@@ -38,7 +65,7 @@
   <footer th:fragment="footer(nameTitle)">
     <div class="row">
       <div class="col-md-12 col-sm-12 text-center text-small">
-        <p>Copyright for translations: 2021 <span th:text="${nameTitle}"></span> | Copyright for songs: original creators |
+        <p>Copyright for translations: 2021-2026 <span th:text="${nameTitle}"></span> | Copyright for songs: original creators |
           Powered by <a rel="nofollow noopener noreferrer" target="_blank" href="https://github.com/613-forever/AnimeLyricsWebsite">613-forever/AnimeLyricsWebsite</a></p>
       </div>
     </div>

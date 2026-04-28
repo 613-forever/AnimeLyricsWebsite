@@ -46,7 +46,7 @@ import java.util.*;
 public class Parser extends AnimeLyricsPBaseVisitor<Element> {
     static final private Logger LOGGER = LoggerFactory.getLogger(Parser.class);
     String name, creationTime, author, description, image;
-    List<String> keywords;
+    List<String> keywords, openGraphImages;
     TemplateParser templateParser;
     int lyricsStartLine = -1;
     static final String DEFAULT_LANG = "zh", JAPANESE_LANG = "ja", JAPANESE_ROMAJI = "ja-Latn";
@@ -71,6 +71,7 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
             if (keywords != null) info.setKeywords(keywords);
             if (description != null) info.setDescription(description);
             if (image != null) info.setImage(image);
+            if (openGraphImages != null && !openGraphImages.isEmpty()) info.setOpenGraphImages(openGraphImages);
             info.setPubdate(DateUtils.fromFormatted(creationTime));
             return info;
         } catch (IOException e) {
@@ -449,6 +450,9 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
                 keywords.addAll(Arrays.asList(makeWords(node.keywords().words()).split(",")));
             } else if (node.description() != null) {
                 description = makeWords(node.description().words());
+            } else if (node.open_graph_image() != null) {
+                if (openGraphImages == null) openGraphImages = new ArrayList<>();
+                openGraphImages.add(makeWords(node.open_graph_image().words()));
             }
         }
         return nodes;

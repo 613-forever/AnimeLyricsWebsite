@@ -33,6 +33,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class SitemapRenderer implements Renderer {
     private final FileCollector fileCollector;
@@ -64,7 +65,7 @@ public class SitemapRenderer implements Renderer {
 
         Document doc = DocumentHelper.createDocument();
         Element root = doc.addElement("urlset", xmlns);
-        ZonedDateTime now = ZonedDateTime.now();
+        ZonedDateTime now = ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 
         addUrl(root, "", now, "daily", 0.2);
         for (SourceFileInfo info: fileCollector.getArticles()) {

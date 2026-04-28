@@ -59,6 +59,7 @@ AUTHOR: 'a' | 'author';
 TIME: 'ti' | 'time';
 KEYWORD: 'key' | 'keyword' | 'keywords';
 DESCRIPTION: 'desc' | 'description';
+OPEN_GRAPH_IMAGE: 'ogi' | 'og-image';
 
 mode WILD; // do not recognize anything until we pop it
 PAREN_R: ')' -> popMode;

@@ -19,6 +19,7 @@
 package org.forever613.anime_lyrics;
 
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class GeneratedFileInfo {
@@ -28,12 +29,13 @@ public class GeneratedFileInfo {
     private List<String> keywords;
     private String description;
     private String image;
+    private List<String> openGraphImages;
     private String otherContent;
 
     public GeneratedFileInfo() {
         this.author = Config.getInstance().getNameFooter();
         this.title = "untitled";
-        this.pubdate = ZonedDateTime.now();
+        this.pubdate = ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS);
         this.otherContent = "";
     }
 
@@ -85,6 +87,14 @@ public class GeneratedFileInfo {
         this.image = image;
     }
 
+    public List<String> getOpenGraphImages() {
+        return openGraphImages;
+    }
+
+    public void setOpenGraphImages(List<String> openGraphImages) {
+        this.openGraphImages = openGraphImages;
+    }
+
     public String getOtherContent() {
         return otherContent;
     }
@@ -98,10 +108,11 @@ public class GeneratedFileInfo {
         final StringBuffer sb = new StringBuffer("GeneratedFileInfo{");
         sb.append("author='").append(author).append('\'');
         sb.append(", title='").append(title).append('\'');
-        sb.append(", pubdate='").append(pubdate).append('\'');
-        sb.append(", keywords='").append(String.join(",", keywords)).append('\'');
+        sb.append(", pubdate=").append(pubdate);
+        sb.append(", keywords=").append(keywords);
         sb.append(", description='").append(description).append('\'');
         sb.append(", image='").append(image).append('\'');
+        sb.append(", openGraphImages=").append(openGraphImages);
         sb.append(", otherContent='").append(otherContent).append('\'');
         sb.append('}');
         return sb.toString();

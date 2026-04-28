@@ -33,6 +33,8 @@ import org.thymeleaf.context.Context;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class AnimeLyricsRenderer implements Renderer {
@@ -64,6 +66,14 @@ public class AnimeLyricsRenderer implements Renderer {
         if (info.getImage() != null) {
             image = ImageUtils.loadImageInfo(draft.getParentFile(), info.getImage());
         }
+        List<ImageInfo> openGraphImages = new ArrayList<>();
+        if (info.getOpenGraphImages() != null && !info.getOpenGraphImages().isEmpty()) {
+            for (String openGraphImage : info.getOpenGraphImages()) {
+                openGraphImages.add(ImageUtils.loadImageInfo(draft.getParentFile(), openGraphImage));
+            }
+        } else if (image != null) {
+            openGraphImages.add(image);
+        }
 
         Context context = new Context();
         context.setVariable("nameTitle", Config.getInstance().getNameTitle());
@@ -82,6 +92,7 @@ public class AnimeLyricsRenderer implements Renderer {
         context.setVariable("styles", parser.getTemplateParser().getRequiredCSS());
         context.setVariable("scripts", parser.getTemplateParser().getRequiredJS());
         context.setVariable("url", Config.getInstance().getRootUrl() + target.getName());
+        context.setVariable("ogImages", openGraphImages);
         context.setVariable("image", image);
 
         // Make it a plugin later.

@@ -21,6 +21,8 @@ package org.forever613.anime_lyrics.renderers;
 import org.forever613.anime_lyrics.Config;
 import org.forever613.anime_lyrics.FileCollector;
 import org.forever613.anime_lyrics.GeneratedFileInfo;
+import org.forever613.anime_lyrics.SourceFileInfo;
+import org.forever613.anime_lyrics.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
@@ -29,6 +31,8 @@ import org.thymeleaf.context.Context;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -45,6 +49,24 @@ public class ListFileRenderer implements Renderer {
     @Override
     public GeneratedFileInfo render(File draft, File target) {
         assert draft == null;
+
+        ZonedDateTime createdTime = ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+        for (SourceFileInfo fileInfo : fileCollector.getArticles()) {
+            if (fileInfo.getCreatedDate().isBefore(createdTime)) {
+                createdTime = fileInfo.getCreatedDate();
+            }
+        }
+        for (SourceFileInfo fileInfo : fileCollector.getHelpArticles()) {
+            if (fileInfo.getCreatedDate().isBefore(createdTime)) {
+                createdTime = fileInfo.getCreatedDate();
+            }
+        }
+        for (SourceFileInfo fileInfo : fileCollector.getSysArticles()) {
+            if (fileInfo.getCreatedDate().isBefore(createdTime)) {
+                createdTime = fileInfo.getCreatedDate();
+            }
+        }
+        ZonedDateTime modifiedTime = ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 
         Context context = new Context();
         context.setVariable("nameTitle", Config.getInstance().getNameTitle());
@@ -63,6 +85,9 @@ public class ListFileRenderer implements Renderer {
         context.setVariable("title", info.getTitle());
         context.setVariable("keywords", String.join(", ", info.getKeywords()));
         context.setVariable("description", info.getDescription());
+        context.setVariable("createdTimeISO8601", DateUtils.formatISO8601(createdTime));
+        context.setVariable("modifiedTimeISO8601", DateUtils.formatISO8601(modifiedTime));
+        context.setVariable("url", Config.getInstance().getRootUrl());
 
         // Make it a plugin later.
         Map<String, String> otherConfigMap = Config.getInstance().getOtherConfigMap();

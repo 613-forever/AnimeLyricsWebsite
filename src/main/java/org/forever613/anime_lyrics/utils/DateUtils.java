@@ -31,9 +31,12 @@ import java.util.Date;
 
 public class DateUtils {
     private static final Logger logger = LoggerFactory.getLogger("DateUtils");
+    @Deprecated
     private static final DateFormat date_format = new SimpleDateFormat("yyyy-MM-dd");
+    @Deprecated
     private static final DateFormat full_format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
+    private static final DateTimeFormatter new_full_format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private static final DateTimeFormatter input1_format = DateTimeFormatter.ofPattern("yyyy-M-d H:mm");
     private static final DateTimeFormatter input2_format = DateTimeFormatter.ofPattern("yyyy.M.d H:mm");
     private static final DateTimeFormatter input3_format = DateTimeFormatter.ofPattern("yyyy/M/d H:mm");
@@ -54,7 +57,7 @@ public class DateUtils {
     }
 
     public static String format(ZonedDateTime date) {
-        return DateTimeFormatter.ISO_LOCAL_DATE.format(date);
+        return new_full_format.format(date);
     }
 
     public static String formatISO8601(long milliseconds) {
@@ -65,6 +68,7 @@ public class DateUtils {
         return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(date);
     }
 
+    @Deprecated
     public static String formatDate(long milliseconds) {
         return formatDate(fromMilli(milliseconds));
     }

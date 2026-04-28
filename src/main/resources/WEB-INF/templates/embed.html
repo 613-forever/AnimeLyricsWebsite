@@ -15,7 +15,7 @@
           <h1 class="col-md-12" th:utext="${title}">标题</h1>
           <th:block th:if="${author!=null || createdTime!=null || modifiedTime!=null}">
             <div class="author col-md-2 col-sm-4" th:if="${author != null}">
-              <span th:text="${author}"></span>
+              <span id="author" th:text="${author}"></span>
             </div>
             <div class="created-at col-md-2 col-sm-4" th:if="${createdTime != null}">
               <span><time pubdate th:text="${createdTime}"></time></span>

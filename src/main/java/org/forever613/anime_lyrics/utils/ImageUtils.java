@@ -21,8 +21,13 @@ package org.forever613.anime_lyrics.utils;
 import org.forever613.anime_lyrics.Config;
 import org.forever613.anime_lyrics.ImageInfo;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Iterator;
 
 public class ImageUtils {
     public static ImageInfo loadImageInfo(File draftDir, String image) {
@@ -30,34 +35,21 @@ public class ImageUtils {
         String relativeToRootPath = image.charAt(0) == '/' ? image.substring(1) : image;
         info.setAbsolutePath(Config.getInstance().getRootUrl() + relativeToRootPath);
 
-        if (!image.substring(image.length() - 4).equals(".webp")) {
-            return info;
-        }
-
-        info.setMimeType("image/webp");
-        try (InputStream is = Files.newInputStream(draftDir.toPath().resolve("copy_only").resolve(relativeToRootPath))) {
-            extractDimension(info, is);
+        Path imageFilePath = draftDir.toPath().resolve("copy_only").resolve(relativeToRootPath);
+        try (ImageInputStream iis = ImageIO.createImageInputStream(Files.newInputStream(imageFilePath))) {
+            Iterator<ImageReader> readers = ImageIO.getImageReaders(iis);
+            if (readers.hasNext()) {
+                ImageReader reader = readers.next();
+                reader.setInput(iis, false, false);
+                String mimeType = reader.getOriginatingProvider().getMIMETypes()[0];
+                info.setMimeType(mimeType);
+                info.setWidth(reader.getWidth(0));
+                info.setHeight(reader.getHeight(0));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         return info;
-    }
-
-    public static void extractDimension(ImageInfo info, InputStream is) throws IOException {
-        int readSize = 30;
-        byte[] data = new byte[readSize];
-        int result = is.read(data);
-        if (result == readSize && new String(data, 0, 4).equals("RIFF") && data[15] == 'X') {
-            info.setWidth(1 + get24bit(data, 24));
-            info.setHeight(1 + get24bit(data, 27));
-        }
-    }
-
-    // 读取24位小端序(Little-Endian)整数
-    private static int get24bit(byte[] data, int index) {
-        return (data[index] & 0xFF) |
-                ((data[index + 1] & 0xFF) << 8) |
-                ((data[index + 2] & 0xFF) << 16);
     }
 }

@@ -32,7 +32,6 @@ import org.forever613.anime_lyrics.parser.grammar.AnimeLyricsL;
 import org.forever613.anime_lyrics.parser.grammar.AnimeLyricsP;
 import org.forever613.anime_lyrics.parser.grammar.AnimeLyricsPBaseVisitor;
 import org.forever613.anime_lyrics.utils.DateUtils;
-import org.forever613.anime_lyrics.utils.HtmlUtils;
 import org.forever613.anime_lyrics.utils.KanaUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,7 +89,7 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
         Element root = DocumentHelper.createElement("div");
         root.addAttribute("class", "anime_lyrics");
 
-        name = HtmlUtils.escapeHtml(ctx.name().getText().trim());
+        name = ctx.name().getText().trim();
 
         Element article = visitArticle(ctx.article());
         article.addAttribute("class", "article");
@@ -275,13 +274,13 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
      */
     private String makeWordOrPunctuation(AnimeLyricsP.Word_or_puncContext wordContext) {
         if (wordContext.PUNCTUATION() != null) {
-            return HtmlUtils.escapeHtml(wordContext.PUNCTUATION().getText());
+            return wordContext.PUNCTUATION().getText();
         } else if (wordContext.word() != null) {
             return makeWord(wordContext.word());
         } else if (wordContext.RAW() != null) {
             String wrapped = wordContext.RAW().getText();
             String content = wrapped.substring(1, wrapped.length() - 1).replace("\\`", "`");
-            return HtmlUtils.escapeHtml(content);
+            return content;
         }
         throw new IllegalStateException();
     }
@@ -302,11 +301,11 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
                 } else if (text.charAt(i) == '\n') {
                     ++i;
                 } else {
-                    sb.append(HtmlUtils.escapeHtml(text.charAt(i)));
+                    sb.append(text.charAt(i));
                     ++i;
                 }
             } else if (c != '@') {
-                sb.append(HtmlUtils.escapeHtml(c));
+                sb.append(c);
             }
         }
         return sb.toString();
@@ -653,8 +652,7 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
      */
     private Node makeTextOnlyLyricsWord(AnimeLyricsP.Lyrics_wordContext context) {
         if (context.foreign_ruby() != null) {
-            String literal = makeWord(context.foreign_ruby().literal.getText());
-            return DocumentHelper.createText(literal);
+            return DocumentHelper.createText(makeWord(context.foreign_ruby().literal.getText()));
         } else {
             StringBuilder sb = new StringBuilder();
             for (AnimeLyricsP.Lyrics_sliceContext sliceContext : context.nodes) {
@@ -696,23 +694,27 @@ public class Parser extends AnimeLyricsPBaseVisitor<Element> {
                 literalText = literalText.substring(2);
                 capitalClass = "uppercase";
             }
+
             String foreignWord, literal;
+            literal = makeWord(literalText);
             if (text.equals("=")) {
-                literal = makeWord(literalText);
                 foreignWord = literal;
             } else {
                 foreignWord = makeWord(text);
-                literal = makeWord(literalText);
             }
 
             elements.realText.addText(literal);
             elements.bracketText.addText(literal);
             if (!foreignWord.isEmpty()) {
+                String romajiTextClass = capitalClass.isEmpty() ? "gairaigo" : "gairaigo " + capitalClass;
                 if (context.foreign_ruby().PLUS() == null) {
-                    elements.romajiText.addAttribute("class", "gairaigo " + capitalClass).addText(foreignWord);
+                    elements.romajiText
+                            .addAttribute("class", romajiTextClass)
+                            .addText(foreignWord);
                 } else {
                     elements.romajiText.addText(KanaUtils.romaji(Collections.singletonList(literal)) + "(");
-                    elements.romajiText.addElement("span").addAttribute("class", "gairaigo " + capitalClass)
+                    elements.romajiText.addElement("span")
+                            .addAttribute("class", romajiTextClass)
                             .addText(foreignWord);
                     elements.romajiText.addText(")");
                 }

@@ -9,35 +9,35 @@
   <!-- links to an external site -->
   <a th:fragment="external(literal, href)"
      rel="nofollow noopener noreferrer" class="external-link" target="_blank"
-     th:title="|${literal}(外部链接)|" th:href="${href}" th:utext="${literal}">
+     th:title="|${literal}(外部链接)|" th:href="${href}" th:text="${literal}">
     Template Dummy Text
   </a>
   <a th:fragment="bilibili(literal, href)"
      rel="nofollow noopener noreferrer" class="external-link bilibili-link" target="_blank"
-     th:title="|${literal}(bilibili)|" th:href="@{|https://www.bilibili.com/${href}|}" th:utext="${literal}">
+     th:title="|${literal}(bilibili)|" th:href="@{|https://www.bilibili.com/${href}|}" th:text="${literal}">
     Template Dummy Text
   </a>
   <a th:fragment="bilibili-video(literal, bvId, page)"
      rel="nofollow noopener noreferrer" class="external-link bilibili-link" target="_blank"
      th:title="|${literal}(bilibili)|" th:href="@{|https://www.bilibili.com/video/BV${bvId}?p=${page}|}"
-     th:utext="${literal}">
+     th:text="${literal}">
     Template Dummy Text
   </a>
   <a th:fragment="moegirl(literal, href)"
      rel="nofollow noopener noreferrer" class="external-link moegirl-link" target="_blank"
-     th:title="|${literal}(萌娘百科)|" th:href="@{|https://zh.moegirl.org.cn/${href}|}" th:utext="${literal}">
+     th:title="|${literal}(萌娘百科)|" th:href="@{|https://zh.moegirl.org.cn/${href}|}" th:text="${literal}">
     Template Dummy Text
   </a>
   <!-- links to an internal site -->
   <a th:fragment="internal(literal, href)"
      class="internal-link"
-     th:title="${literal}" th:href="${href}" th:utext="${literal}">
+     th:title="${literal}" th:href="${href}" th:text="${literal}">
     Template Dummy Text
   </a>
   <!-- links to an in-page anchor -->
   <a th:fragment="anchor(literal, href)"
      class="in-page-anchor-link"
-     th:title="${literal}" th:href="${href}" th:utext="${literal}">
+     th:title="${literal}" th:href="${href}" th:text="${literal}">
     Template Dummy Text
   </a>
   <!-- cards for B站(www.bilibili.com) -->

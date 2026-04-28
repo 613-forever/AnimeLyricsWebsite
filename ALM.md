@@ -457,10 +457,10 @@ Particles read differently from written *kana*s, can be preceded with `@`.
 |normal ha|`は`|は|ha|
 |particle ha|`@は`|は|wa|
 |normal he|`へ`|へ|he|
-|particle he|`@へ`|は|wa|
+|particle he|`@へ`|へ|wa|
 |particle wo|`を`|を|o|
 
-We preserve the following escaped to be used in special contexts.
+We have reversed the following escaped character to be used in special contexts.
 |name|ALM|Japanese|*romaji*|
 |:-:|:-:|:-:|:-:|
 |escaped wo|`@を`|を|wo|
@@ -468,7 +468,7 @@ We preserve the following escaped to be used in special contexts.
 ##### Break Auto-Elongate
 
 When generating *romaji*, the long vowels, "aa", "ee", "oo", "ou", "uu" are generated as macron-indicated letters automatically.
-("ei", "ii" is not written this way in modified Hepburn romanization.)
+("ei", "ii" is not written this way in modified Hepburn romanization. Neither in our implementation.)
 But on morpheme border, they should be written separately.
 
 Just use a `@` to break.
@@ -482,7 +482,7 @@ Special token `@C` can be prepended to tell that.
 
 Another case-related token is `@U`, which uppers the whole word.
 
-`@S` and `@L` are planned to preserve for small letters / lower cases, but are not defined yet.
+`@S` and `@L` are reserved for lower-case letters, but are not defined/implemented yet.
 
 #### Loanwords & Non-Japanese Text
 
@@ -491,12 +491,11 @@ Another case-related token is `@U`, which uppers the whole word.
 In transcription, loadwords are expected to be written in source language with italic font.
 
 Just as *furigana*-notation, but use round parentheses instead.
-
 ```text
 {ルビー}(ruby)
 ```
 
-Japanese text will preserve it as ルビー but in *romaji* it is *ruby*.
+Japanese text will be rendered as ルビー but in *romaji* it is rendered *ruby* in italic.
 
 ##### Modified Loanwords
 
@@ -509,7 +508,7 @@ We can generate it as:
 {テレビ}+(television)
 ```
 
-Note that only *kana* are allowed in this form.
+Note that only *kana* are allowed in this form, because “terebi” needs “テレビ” to generate from.
 
 ##### Foreign Text
 
@@ -519,7 +518,7 @@ If the lyrics itself is not Japanese, use an equal sign `=` in the parentheses a
 {Yes}(=)
 ```
 
-Japanese text will render it as Yes but in *romaji* it is an italic *Yes*.
+Japanese text will render it as “Yes”, while in *romaji* it is an italic “*Yes*”.
 
 #### Multiple Words Markups
 
